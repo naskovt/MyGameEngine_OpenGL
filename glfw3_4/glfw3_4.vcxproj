@@ -70,8 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,6 +98,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,6 +135,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="ShadersCreator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
@@ -137,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="ShadersCreator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

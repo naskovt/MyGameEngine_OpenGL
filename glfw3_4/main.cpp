@@ -1,6 +1,6 @@
 #include <glad/glad.h>
 #include <glfw3.h>
-#include "ShaderLoader.h"
+#include "ShadersCreator.h"
 
 #include <iostream>
 #include <sstream>
@@ -20,8 +20,6 @@ const unsigned int SCR_HEIGHT = 600;
 //const char* vertexShaderSource;
 //const char* fragmentShaderSource;
 
-string vert_Shader;
-string frag_Shader;
 const char* vertexShaderSource;
 const char* fragmentShaderSource;
 
@@ -41,7 +39,7 @@ int main()
 
 	// glfw window creation
 	// --------------------
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "MyGameEngine", NULL, NULL);
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -60,55 +58,17 @@ int main()
 	}
 
 
-	// Load shaders from files
-	LoadShaders();
-
 	// build and compile our shader program
-	// ------------------------------------
-	// vertex shader
-	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-	// check for shader compile errors
-	int success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	// fragment shader
-	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-	// check for shader compile errors
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	// link shaders
-	int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	// check for linking errors
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+// ------------------------------------
+	ShadersCreator customShaders("shader.vert", "shader.frag"); // you can name your shader files however you like
+
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
 		 0.5f,  0.5f, 0.0f,  // top right
 		 0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
+		//-0.5f, -0.5f, 0.0f,  // bottom left
 		-0.5f,  0.5f, 0.0f   // top left
 	};
 	unsigned int indices[] = {  // note that we start from 0!
@@ -159,7 +119,14 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw our first triangle
-		glUseProgram(shaderProgram);
+
+		float timeValue = glfwGetTime();
+		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
+		customShaders.use();
+		customShaders.setFloat("timedColor", greenValue);
+		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "timedColor");
+		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -200,38 +167,6 @@ void framebuffer_size_callback(GLFWwindow * window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
-void LoadShaders() {
-
-	ShaderLoader loader_vert;
-	ShaderLoader loader_frag;
-
-
-	if (!loader_vert.loadShaderSource("shader.vert", vert_Shader))
-	{
-		std::cout << "couldn't read shader's file - loadShaderSource()";
-	}
-	else
-	{
-		vertexShaderSource = &(vert_Shader[0]);
-	}
-
-	//std::cout << "Printing vert shader: \n";
-	//for (size_t i = 0; i < loader_vert.GetLength(); i++)
-	//{
-	//	std::cout << vertexShaderSource[i];
-	//}
-
-	if (!loader_frag.loadShaderSource("shader.frag", frag_Shader))
-	{
-		std::cout << "couldn't read shader's file - loadShaderSource()";
-	}
-	else
-	{
-		fragmentShaderSource = &(frag_Shader[0]);
-	}
-
-	//std::cout << "\n\nPrinting shaders ended! \n\n";
-}
 
 /*
 
