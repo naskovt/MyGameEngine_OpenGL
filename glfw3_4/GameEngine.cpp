@@ -82,6 +82,7 @@ bool GameEngine::Initialize() {
 		1, 2, 3   // second Triangle
 	};
 
+
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);

@@ -7,7 +7,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "GameEngine.h"
-#include "ShadersCreator.h"
 
 
 using namespace std;
