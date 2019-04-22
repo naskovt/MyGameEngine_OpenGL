@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 #include <string>
 
 #include <glad/glad.h>
 #include <glfw3.h>
 #include "ShadersCreator.h"
+#include "Object.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,6 +28,8 @@ public:
 
 	bool Initialize();
 
+	void AddObject(std::string name);
+
 	~GameEngine();
 
 private:
@@ -43,6 +47,7 @@ private:
 	////Temporal transform for just 1 triangle object
 	glm::mat4 trans;
 	GLFWwindow* _window;
+	std::vector<Object> _objectsVector;
 };
 
 #endif // !GAMEENGINE_H

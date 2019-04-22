@@ -119,7 +119,6 @@ void GameEngine::StartEngineLoop() {
 	// render loop
 	// -----------
 
-
 	while (!glfwWindowShouldClose(_window))
 	{
 		// input
@@ -171,3 +170,8 @@ GameEngine::~GameEngine()
 	glfwTerminate();
 	//std::cout << "\nengine d~tor..";
 }
+
+void GameEngine::AddObject(std::string name) {
+	_objectsVector.emplace_back(name);
+}
+

@@ -135,8 +135,11 @@
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShadersCreator.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag" />
@@ -144,8 +147,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShadersCreator.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

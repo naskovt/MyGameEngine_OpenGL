@@ -24,16 +24,12 @@ glm::mat4 GetTransform() {
 	return trans;
 }
 
-void InitShaders() {
-
-}
-
 int main()
 {
 
 	GameEngine Engine(600, 500, "MyGameEngine", "shader.vert", "shader.frag");
 
-	//ShadersCreator customShaders();
+
 
 	Engine.StartEngineLoop();
 
