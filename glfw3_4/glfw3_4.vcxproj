@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
