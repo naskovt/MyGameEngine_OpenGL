@@ -2,6 +2,10 @@
 #include <glfw3.h>
 #include "ShadersCreator.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -11,14 +15,10 @@ using namespace std;
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
-void LoadShaders();
 
 // settings
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-
-//const char* vertexShaderSource;
-//const char* fragmentShaderSource;
 
 const char* vertexShaderSource;
 const char* fragmentShaderSource;
@@ -61,6 +61,17 @@ int main()
 	// build and compile our shader program
 // ------------------------------------
 	ShadersCreator customShaders("shader.vert", "shader.frag"); // you can name your shader files however you like
+
+
+
+	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+	glm::mat4 trans = glm::mat4(1.0f);
+	trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+	vec = trans * vec;
+	std::cout << vec.x << vec.y << vec.z << std::endl;
+
+
+
 
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
