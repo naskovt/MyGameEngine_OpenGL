@@ -16,6 +16,8 @@ class ShadersCreator
 public:
 
 	unsigned int ID;
+
+	ShadersCreator() = default;
 	// constructor generates the shader on the fly
 	// ------------------------------------------------------------------------
 	ShadersCreator(const char* vertexPath, const char* fragmentPath);

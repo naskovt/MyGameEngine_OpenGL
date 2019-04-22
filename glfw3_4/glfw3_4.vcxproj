@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
@@ -142,6 +143,7 @@
     <None Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngine.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShadersCreator.h" />
   </ItemGroup>

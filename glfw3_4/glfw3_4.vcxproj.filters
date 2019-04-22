@@ -27,6 +27,9 @@
     <ClCompile Include="ShadersCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.vert">
@@ -41,6 +44,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShadersCreator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
