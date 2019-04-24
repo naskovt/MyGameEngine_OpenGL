@@ -2,7 +2,7 @@
 
 
 
-Transform::Transform() : _transformMatrix(glm::mat4(1.0f))
+Transform::Transform() : transformMatrix(glm::mat4(1.0f))
 {
 };
 
@@ -10,3 +10,5 @@ Transform::Transform() : _transformMatrix(glm::mat4(1.0f))
 Transform::~Transform()
 {
 }
+
+

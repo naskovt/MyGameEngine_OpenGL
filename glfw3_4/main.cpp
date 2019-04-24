@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
+
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -10,6 +12,7 @@
 
 
 using namespace std;
+
 
 glm::mat4 GetTransform() {
 
@@ -25,12 +28,18 @@ glm::mat4 GetTransform() {
 
 int main()
 {
+	// TODO make better multiple shader loading
+	GameEngine Engine(300, 300, "MyGameEngine", "shader.vert", "shader.frag");
 
-	GameEngine Engine(600, 500, "MyGameEngine", "shader.vert", "shader.frag");
+	Engine.AddObject("tri1");
+	Engine.AddObject("tri2");
+	Engine.AddObject("tri3");
 
+	Engine.GameObjects_Vector[0].Move(glm::vec3(0.5f, 0.2f, 0.1f));
+	Engine.GameObjects_Vector[1].Move(glm::vec3(0.1f, 0.82f, 0.1f));
+	Engine.GameObjects_Vector[2].Move(glm::vec3(0.15f, 0.52f, 0.9f));
 
-
-	Engine.StartEngineLoop();
+	Engine.StartDrawingLoop();
 
 
 	return 0;

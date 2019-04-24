@@ -44,42 +44,20 @@ void GameEngine::processInput(GLFWwindow* window)
 		glfwSetWindowShouldClose(window, true);
 }
 
-bool GameEngine::Initialize() {
 
-	// glfw window creation
-	// --------------------
-	//GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "MyGameEngine", NULL, NULL);
-	if (_window == NULL)
-	{
-		std::cout << "\nFailed to create GLFW window\n" << std::endl;
-		glfwTerminate();
-		return false;
-	}
+void LoadTriangle2(unsigned int& VBO, unsigned int& VAO, unsigned int& EBO) {
 
-	glfwMakeContextCurrent(_window);
-	glfwSetFramebufferSizeCallback(_window, [](GLFWwindow * window, int width, int height) {glViewport(0, 0, width, height); });
-
-	// glad: load all OpenGL function pointers
-	// ---------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "\nFailed to initialize GLAD\n" << std::endl;
-		return false;
-	}
-
-
+	//TODO not hardcoded mesh verticies and indecies !!
 
 	// set up vertex data (and buffer(s)) and configure vertex attributes
 	// ------------------------------------------------------------------
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f,  // top right
-		 0.5f, -0.5f, 0.0f,  // bottom right
-		//-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left
+		 0.10f,0.10f, 0.10f,  // top right
+		 0.25f, -0.25f, 0.0f,  // bottom right
+		-0.85f,  0.85f, 0.0f   // top left
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,  // first Triangle
-		1, 2, 3   // second Triangle
 	};
 
 
@@ -109,13 +87,37 @@ bool GameEngine::Initialize() {
 	glBindVertexArray(0);
 
 
+}
+
+bool GameEngine::Initialize() {
+
+	// glfw window creation
+	// --------------------
+	if (_window == NULL)
+	{
+		std::cout << "\nFailed to create GLFW window\n" << std::endl;
+		glfwTerminate();
+		return false;
+	}
+
+	glfwMakeContextCurrent(_window);
+	glfwSetFramebufferSizeCallback(_window, [](GLFWwindow * window, int width, int height) {glViewport(0, 0, width, height); });
+
+	// glad: load all OpenGL function pointers
+	// ---------------------------------------
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "\nFailed to initialize GLAD\n" << std::endl;
+		return false;
+	}
+
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	return true;
 }
 
-void GameEngine::StartEngineLoop() {
+void GameEngine::StartDrawingLoop() {
 
 	// render loop
 	// -----------
@@ -131,24 +133,18 @@ void GameEngine::StartEngineLoop() {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// draw our first triangle
-
-		float timeValue = glfwGetTime();
-		float greenValue = (sin(timeValue) / 2.0f) + 0.5f;
-
-		_customShaders.use();
-
-		_customShaders.setFloat("timedColor", greenValue);
-
-		//_customShaders.setMatrix4("transform", trans);
 
 		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "timedColor");
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		// glBindVertexArray(0); // no need to unbind it every time
+		// draw our gameobjects
+		for (size_t i = 0; i < GameObjects_Vector.size(); i++)
+		{
+			// TODO make shader value for each object, in order to use different shaders for different objects
+			GameObjects_Vector[i].UpdateDrawing(_customShaders);
+		}
+
+
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		// -------------------------------------------------------------------------------
@@ -160,11 +156,7 @@ void GameEngine::StartEngineLoop() {
 
 GameEngine::~GameEngine()
 {
-	// optional: de-allocate all resources once they've outlived their purpose:
-	// ------------------------------------------------------------------------
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
+	
 
 	//// glfw: terminate, clearing all previously allocated GLFW resources.
 	//// ------------------------------------------------------------------
@@ -173,6 +165,6 @@ GameEngine::~GameEngine()
 }
 
 void GameEngine::AddObject(std::string name) {
-	_objectsVector.emplace_back(name);
+	GameObjects_Vector.emplace_back(name);
 }
 

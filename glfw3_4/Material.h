@@ -8,10 +8,10 @@ class Material
 {
 public:
 	Material() = delete;
-	Material("shader.vert", "shader.frag");
+	Material(std::string vertShaderName, std::string fragShaderName);
 	~Material();
 private:
-	ShadersCreator shader;
+	ShadersCreator _shader;
 };
 
 #endif

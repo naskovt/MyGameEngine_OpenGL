@@ -7,10 +7,12 @@
 class Transform
 {
 public:
+	glm::mat4 transformMatrix;
+
 	Transform();
+
 	~Transform();
 private:
-	glm::mat4 _transformMatrix;
 };
 
 #endif

@@ -135,6 +135,7 @@
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
@@ -146,12 +147,18 @@
     <None Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="Model_.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShadersCreator.h" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TriangleMesh.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
