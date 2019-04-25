@@ -2,42 +2,53 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <map>
 
 #include "GameEngine.h"
+#include "Enumerators.h"
+#include "ShadersCreator.h"
 
 
 using namespace std;
 
+//std::map< std::string, ShadersCreator > shaders_map;
+ShadersCreator shader;
+std::map< std::string, Material > materials_map;
 
-glm::mat4 GetTransform() {
 
-	// Create transformation matrix4 and edit pose rot and scale
-	glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-	glm::mat4 trans = glm::mat4(1.0f);
-	trans = glm::translate(trans, glm::vec3(3.0f, 1.0f, 0.0f));
-	trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-	//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
 
-	return trans;
+void CreateMaterials() {
+
+	shader = ShadersCreator("shader.vert", "shader.frag");
+
+	materials_map.insert(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
+	materials_map.insert(make_pair("Green_Material", Material(shader, 0, 1, 0, 1)));
+	materials_map.insert(make_pair("Blue_Material", Material(shader, 0, 0, 1, 1)));
 }
 
 int main()
 {
+
 	// TODO make better multiple shader loading
-	GameEngine Engine(300, 300, "MyGameEngine", "shader.vert", "shader.frag");
+	GameEngine Engine(300, 300, "MyGameEngine");
 
-	Engine.AddObject("tri1");
-	Engine.AddObject("tri2");
-	Engine.AddObject("tri3");
+	//TODO example solution: Engine.MaterialsManager.AddMaterial(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
+	// order is important! for now... need to init glfw3()... 
+	CreateMaterials();
 
-	Engine.GameObjects_Vector[0].Move(glm::vec3(0.5f, 0.2f, 0.1f));
-	Engine.GameObjects_Vector[1].Move(glm::vec3(0.1f, 0.82f, 0.1f));
-	Engine.GameObjects_Vector[2].Move(glm::vec3(0.15f, 0.52f, 0.9f));
+
+	Engine.AddObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
+	Engine.AddObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
+	Engine.AddObject("blue square" , MeshType::Square, materials_map.find("Blue_Material")->second);
+
+	Engine.GameObjects_Vector[0].Move(0.2f, 0.1f, 0.1f);
+
+	Engine.GameObjects_Vector[1].Move(2, 2, 2);
+
+	Engine.GameObjects_Vector[2].Scale(0.3f, 0.3f, 0.3f);
+
+	Engine.GameObjects_Vector[2].Move(2,-2, 0);
+
 
 	Engine.StartDrawingLoop();
 

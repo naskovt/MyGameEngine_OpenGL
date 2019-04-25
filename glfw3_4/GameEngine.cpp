@@ -1,9 +1,13 @@
+#include "Enumerators.h"
 #include "GameEngine.h"
 
 
-GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
-															const char* vertShaderName, const char* fragShaderName)
+//GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
+//	std::map< std::string, Material > & materials_map_ptr, const char* vertShaderName, const char* fragShaderName) :
+//	_materials_map_ptr ( materials_map_ptr)
+GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName)
 {
+
 	// glfw: initialize and configure
 // ------------------------------
 	if (!glfwInit())
@@ -32,7 +36,6 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 		std::cerr << "ERROR INSIDE : Engine.Initialize()" << std::endl;
 	}
 
-	_customShaders = ShadersCreator(vertShaderName, fragShaderName);
 };
 
 
@@ -141,7 +144,7 @@ void GameEngine::StartDrawingLoop() {
 		for (size_t i = 0; i < GameObjects_Vector.size(); i++)
 		{
 			// TODO make shader value for each object, in order to use different shaders for different objects
-			GameObjects_Vector[i].UpdateDrawing(_customShaders);
+			GameObjects_Vector[i].UpdateDrawing();
 		}
 
 
@@ -164,7 +167,7 @@ GameEngine::~GameEngine()
 	//std::cout << "\nengine d~tor..";
 }
 
-void GameEngine::AddObject(std::string name) {
-	GameObjects_Vector.emplace_back(name);
+void GameEngine::AddObject(const std::string & name, MeshType meshType, Material& material) {
+	GameObjects_Vector.emplace_back(name, meshType, material);
 }
 

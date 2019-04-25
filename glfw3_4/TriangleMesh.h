@@ -1,4 +1,6 @@
-#pragma once
+#ifndef TRIANGLEMESH_H
+#define TRIANGLEMESH_H
+
 #include "Mesh.h"
 
 struct TriangleMesh : public Mesh {
@@ -7,18 +9,22 @@ struct TriangleMesh : public Mesh {
 
 	TriangleMesh() {
 
+		//std::cout << "ctor zero test: " << this->indicesCount << this->verticesCount << this->indices << this->vertices;
 
-			vertices = new float[9]{
-				 0.5f,  0.5f, 0.0f,  // top right
+		vertices = new float[9]{
+				 0.45f,  0.45f, 0.0f,  // top right
 				 0.5f, -0.5f, 0.0f,  // bottom right
-				-0.5f,  0.5f, 0.0f   // top left
-			};
+				-0.25f,  0.5f, 0.0f   // top left
+		};
 
-			indices = new unsigned int[3]{  // note that we start from 0!
-				0, 1, 2,  // first Triangle
-			};
+		indices = new unsigned int[3]{ 0,1,2 };
+
+		this->verticesSize = 36;
+		this->indicesSize = 12;
 	};
 
 
 
 };
+
+#endif // !TRIANGLEMESH_H

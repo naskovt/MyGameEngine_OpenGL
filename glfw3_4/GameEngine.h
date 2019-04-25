@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <string>
+#include <map>
 
 #include <glad/glad.h>
 #include <glfw3.h>
@@ -14,6 +15,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "ShadersCreator.h"
+#include "Material.h"
 #include "TriangleMesh.h"
 #include "Camera.h"
 #include "Object.h"
@@ -24,17 +26,19 @@ public:
 
 	std::vector<Object> GameObjects_Vector;
 
-
 	GameEngine() = delete;
 
-	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set,
-		const char* windowName, const char* vertShaderName, const char* fragShaderName);
+	//GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
+	//
+	//	std::map< std::string, Material >& materials_map_ptr, const char* vertShaderName, const char* fragShaderName);
+
+	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
 
 	void StartDrawingLoop();
 
 	bool Initialize();
 
-	void AddObject(std::string name);
+	void AddObject(const std::string & name, MeshType meshType, Material & material);
 
 	~GameEngine();
 
@@ -47,8 +51,7 @@ private:
 	const char* vertexShaderSource;
 	const char* fragmentShaderSource;
 
-	ShadersCreator _customShaders;
-
+	//std::map< std::string, Material > & _materials_map_ptr;
 
 	////Temporal transform for just 1 triangle object
 	glm::mat4 trans;

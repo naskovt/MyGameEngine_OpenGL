@@ -143,11 +143,13 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="shader.frag" />
     <None Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -156,6 +158,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShadersCreator.h" />
+    <ClInclude Include="SquareMesh.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TriangleMesh.h" />

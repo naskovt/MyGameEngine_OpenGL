@@ -15,16 +15,16 @@ class Object
 {
 public:
 	Object() = delete;
-	Object(std::string name);
+	Object(const std::string name, MeshType meshType, Material& material);
 	~Object();
 
-	void Move(glm::vec3 position);
+	void Move(float xAxis, float yAxis, float zAxis);
 
-	void RotateAround(float angle, glm::vec3 axis);
+	void RotateAround(float angle, float xAxis, float yAxis, float zAxis);
 
 	void Scale(float x, float y, float z);
 
-	void UpdateDrawing(ShadersCreator shader);
+	void UpdateDrawing();
 
 private:
 	std::string _name;

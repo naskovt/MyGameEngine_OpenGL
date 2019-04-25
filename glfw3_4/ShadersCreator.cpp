@@ -79,7 +79,12 @@ void ShadersCreator::setFloat(const std::string& name, float value) const
 {
 	glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
 }
-
+// ------------------------------------------------------------------------
+void ShadersCreator::setVec4(const std::string& name, float value[4]) const
+{
+	// set a 4 float color value
+	glUniform4f(glGetUniformLocation(ID, name.c_str()), value[0], value[1], value[2], value[3]);
+}
 void ShadersCreator::setMatrix4(const std::string& name, glm::mat4 value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));

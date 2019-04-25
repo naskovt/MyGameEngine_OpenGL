@@ -2,16 +2,21 @@
 #define MATERIAL_H
 
 #include "ShadersCreator.h"
+#include <glm/glm.hpp>
 
 
 class Material
 {
 public:
 	Material() = delete;
-	Material(std::string vertShaderName, std::string fragShaderName);
+	Material(ShadersCreator& shader, float r, float g, float b, float a);
+
+	float _color[4];
+	ShadersCreator& GetShader();
+
 	~Material();
 private:
-	ShadersCreator _shader;
+	ShadersCreator& _shader;
 };
 
 #endif
