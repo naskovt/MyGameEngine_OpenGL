@@ -47,12 +47,13 @@ void Model::RenderModel() {
 
 	this->material.GetShader().setFloat("timer", timed_Value);
 	this->material.GetShader().setVec4("color", this->material._color);
+	//this->material.GetShader().setMatrix4("trans", this->);
 	//
 
 	glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 	glDrawElements(GL_TRIANGLES, 128, GL_UNSIGNED_INT, 0);
-	// glBindVertexArray(0); // no need to unbind it every time
-
+	
+	// no need to unbind it every time
 	glBindVertexArray(0);
 }
 
@@ -67,13 +68,16 @@ void Model::LoadMeshToGPU() {
 
 	//std::cout << std::endl << "_mesh->verticesSize: " << _mesh->verticesSize << " _mesh->indicesSize: " << _mesh->indicesSize << std::endl;
 
+	//unsigned int vertsSize = 0;
+	//unsigned int* vertices = _mesh->getVerticesBuffer(&vertsSize);
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, _mesh->verticesSize, _mesh->vertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->indicesSize, _mesh->indices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 	glEnableVertexAttribArray(0);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
