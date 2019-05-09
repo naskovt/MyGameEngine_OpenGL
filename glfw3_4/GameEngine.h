@@ -20,6 +20,8 @@
 #include "Camera.h"
 #include "Object.h"
 
+
+
 class GameEngine
 {
 public:
@@ -42,19 +44,19 @@ public:
 
 	~GameEngine();
 
-
 private:
 
 	//void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
 	void processInput(GLFWwindow* window);
 
-	const char* vertexShaderSource;
-	const char* fragmentShaderSource;
+	char* vertexShaderSource;
+	char* fragmentShaderSource;
 
 	//std::map< std::string, Material > & _materials_map_ptr;
 
 	////Temporal transform for just 1 triangle object
 	glm::mat4 trans;
+
 	GLFWwindow* _window;
 };
 

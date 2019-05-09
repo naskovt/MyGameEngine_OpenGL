@@ -47,8 +47,6 @@ void Model::RenderModel() {
 
 	this->material.GetShader().setFloat("timer", timed_Value);
 	this->material.GetShader().setVec4("color", this->material._color);
-	//this->material.GetShader().setMatrix4("trans", this->);
-	//
 
 	glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
 	glDrawElements(GL_TRIANGLES, 128, GL_UNSIGNED_INT, 0);

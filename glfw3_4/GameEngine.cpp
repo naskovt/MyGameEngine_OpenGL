@@ -1,11 +1,13 @@
 #include "Enumerators.h"
 #include "GameEngine.h"
+#include "Constants.h"
 
 
 //GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
 //	std::map< std::string, Material > & materials_map_ptr, const char* vertShaderName, const char* fragShaderName) :
 //	_materials_map_ptr ( materials_map_ptr)
 GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName)
+
 {
 
 	// glfw: initialize and configure
@@ -16,6 +18,7 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 	}
 
 	_window = glfwCreateWindow(SCR_WIDTH_set, SCR_HEIGHT_set, windowName, NULL, NULL);
+
 
 	if (_window == NULL)
 	{

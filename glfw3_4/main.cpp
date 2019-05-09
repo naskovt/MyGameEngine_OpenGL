@@ -7,6 +7,7 @@
 #include "GameEngine.h"
 #include "Enumerators.h"
 #include "ShadersCreator.h"
+#include "Constants.h"
 
 
 using namespace std;
@@ -30,24 +31,24 @@ int main()
 {
 
 	// TODO make better multiple shader loading
-	GameEngine Engine(300, 300, "MyGameEngine");
+	GameEngine Engine(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, "MyGameEngine");
 
 	//TODO example solution: Engine.MaterialsManager.AddMaterial(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
 	// order is important! for now... need to init glfw3()... 
 	CreateMaterials();
 
 
-	Engine.AddObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
-	Engine.AddObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
+	//Engine.AddObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
+	//Engine.AddObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
 	Engine.AddObject("blue square" , MeshType::Square, materials_map.find("Blue_Material")->second);
 
-	Engine.GameObjects_Vector[0].Move(0.2f, 0.1f, 0.1f);
+	//Engine.GameObjects_Vector[0].Move(0.2f, 0.0f, 0.0f);
 
-	Engine.GameObjects_Vector[1].Move(2, 2, 2);
+	//Engine.GameObjects_Vector[1].Move(2, 2, 2);
 
-	Engine.GameObjects_Vector[2].Scale(0.3f, 0.3f, 0.3f);
+	//Engine.GameObjects_Vector[2].Scale(0.3f, 0.3f, 0.0f);
 
-	Engine.GameObjects_Vector[2].Move(2,-2, 0);
+	//Engine.GameObjects_Vector[2].Move(2,-2, 0);
 
 
 	Engine.StartDrawingLoop();

@@ -5,11 +5,11 @@ layout (location = 0) in vec3 aPos;
 
 out vec4 posv4;
 
-uniform mat4 transform;
+uniform mat4 mvpMatrix;
 
 void main()
 {
   // gl_Position =  vec4(aPos, 1.0f);
 
-   gl_Position =  vec4(aPos, 1.0f) * transform;
+   gl_Position =  vec4(aPos, 1.0f) * mvpMatrix;
 }

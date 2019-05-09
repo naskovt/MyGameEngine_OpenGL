@@ -149,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Material.h" />
