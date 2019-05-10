@@ -18,18 +18,19 @@ public:
 	Object(const std::string name, MeshType meshType, Material& material);
 	~Object();
 
-	void Move(float xAxis, float yAxis, float zAxis);
+	Transform transform;
 
-	void RotateAround(float angle, float xAxis, float yAxis, float zAxis);
+	//void Move(float xAxis, float yAxis, float zAxis);
 
-	void Scale(float x, float y, float z);
+	//void RotateAround(float angle, float xAxis, float yAxis, float zAxis);
+
+	//void Scale(float x, float y, float z);
 
 	void UpdateDrawing();
 
 private:
 	std::string _name;
 	Model _model;
-	Transform _transform;
 };
 
 #endif
