@@ -19,37 +19,31 @@
 #include "TriangleMesh.h"
 #include "Camera.h"
 #include "Object.h"
-
-
+#include "Input.h"
 
 class GameEngine
 {
 public:
 
-	std::vector<Object> GameObjects_Vector;
-	bool isKeyPressed_W;
+	Input* InputManager;
+
 
 	GameEngine() = delete;
-
 	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
-
+	~GameEngine();
 
 	bool Initialize();
-
 	void StartGameLoop(void (*UpdateGame)());
-
-
+	Object& GetObjectByName(std::string name);
 	void AddObject(const std::string & name, MeshType meshType, Material & material);
-
-	~GameEngine();
 
 private:
 
 	char* vertexShaderSource;
 	char* fragmentShaderSource;
 	GLFWwindow* _window;
+	std::map< std::string, Object > GameObjects_Map;
 
-	void ProcessInput(GLFWwindow* window);
 	void DrawGame();
 };
 

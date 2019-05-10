@@ -9,8 +9,6 @@ struct TriangleMesh : public Mesh {
 
 	TriangleMesh() {
 
-		//std::cout << "ctor zero test: " << this->indicesCount << this->verticesCount << this->indices << this->vertices;
-
 		vertices = new float[9]{
 				 0.45f,  0.45f, 0.0f,  // top right
 				 0.5f, -0.5f, 0.0f,  // bottom right

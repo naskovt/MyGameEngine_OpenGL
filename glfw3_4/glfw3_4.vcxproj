@@ -152,6 +152,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />

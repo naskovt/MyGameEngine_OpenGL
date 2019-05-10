@@ -49,31 +49,53 @@ void UpdateOnStart() {
 	Engine->AddObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
 	Engine->AddObject("blue square", MeshType::Square, materials_map.find("Blue_Material")->second);
 
-	Engine->GameObjects_Vector[0].transform.Translate(0.0f, 1.0f, -2.0f);
+	Engine->GetObjectByName("green triangle").transform.Translate(0.0f, 1.0f, -2.0f);
 
-	Engine->GameObjects_Vector[1].transform.Translate(1.0f, 1.0f, -1.0f);
+	Engine->GetObjectByName("red triangle").transform.Translate(1.0f, 1.0f, -1.0f);
 
-	Engine->GameObjects_Vector[2].transform.Scale(1.2f, 1.2f, 1.2f);
+	Engine->GetObjectByName("blue square").transform.Scale(1.2f, 1.2f, 1.2f);
 
-	Engine->GameObjects_Vector[2].transform.Rotate(45, 1, 0, 0);
+	Engine->GetObjectByName("blue square").transform.Rotate(45, 1, 0, 0);
 
 }
+
+
+float rotationSpeed = 4;
 
 void UpdateEachFrame() {
 
-	if (Engine->isKeyPressed_W)
+	if (Engine->InputManager->isKeyPressed_W)
 	{
-		Engine->GameObjects_Vector[0].transform.Rotate(1, 1, 0, 0);
-		Engine->GameObjects_Vector[2].transform.Rotate(2, 0, 1, 0);
+		Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 1, 0, 0);
+		Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 1, 0, 0);
 	}
+
+	if (Engine->InputManager->isKeyPressed_S)
+	{
+		Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 1, 0, 0);
+		Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 1, 0, 0);
+	}
+
+	if (Engine->InputManager->isKeyPressed_A)
+	{
+		Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 0, 1, 0);
+		Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 0, 1, 0);
+	}
+
+	if (Engine->InputManager->isKeyPressed_D)
+	{
+		Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 0, 1, 0);
+		Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 0, 1, 0);
+	}
+
 }
+
 
 int main()
 {
 	Initialize();
 
 	Engine->StartGameLoop(UpdateEachFrame);
-
 
 	return 0;
 }

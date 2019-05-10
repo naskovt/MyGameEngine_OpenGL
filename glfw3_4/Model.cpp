@@ -63,12 +63,6 @@ void Model::LoadMeshToGPU() {
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO);
 
-
-	//std::cout << std::endl << "_mesh->verticesSize: " << _mesh->verticesSize << " _mesh->indicesSize: " << _mesh->indicesSize << std::endl;
-
-	//unsigned int vertsSize = 0;
-	//unsigned int* vertices = _mesh->getVerticesBuffer(&vertsSize);
-
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, _mesh->verticesSize, _mesh->vertices, GL_STATIC_DRAW);
 

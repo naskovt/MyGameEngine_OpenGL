@@ -14,17 +14,11 @@
 class Object
 {
 public:
+	Transform transform;
+
 	Object() = delete;
 	Object(const std::string name, MeshType meshType, Material& material);
 	~Object();
-
-	Transform transform;
-
-	//void Move(float xAxis, float yAxis, float zAxis);
-
-	//void RotateAround(float angle, float xAxis, float yAxis, float zAxis);
-
-	//void Scale(float x, float y, float z);
 
 	void UpdateDrawing();
 

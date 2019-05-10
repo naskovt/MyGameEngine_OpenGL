@@ -2,16 +2,11 @@
 #include "GameEngine.h"
 #include "Constants.h"
 
-
-//GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
-//	std::map< std::string, Material > & materials_map_ptr, const char* vertShaderName, const char* fragShaderName) :
-//	_materials_map_ptr ( materials_map_ptr)
 GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName)
 {
-	isKeyPressed_W = false;
 
 	// glfw: initialize and configure
-// ------------------------------
+	// ------------------------------
 	if (!glfwInit())
 	{
 		std::cout << "GLFW failed to initialize" << std::endl;
@@ -39,70 +34,8 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 		std::cerr << "ERROR INSIDE : Engine.Initialize()" << std::endl;
 	}
 
+	this->InputManager = new Input(_window);
 };
-
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void GameEngine::ProcessInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-		this->isKeyPressed_W = true;
-	}
-	else if(false != this->isKeyPressed_W)
-	{
-		this->isKeyPressed_W = false;
-	}
-
-}
-
-
-void LoadTriangle2(unsigned int& VBO, unsigned int& VAO, unsigned int& EBO) {
-
-	//TODO not hardcoded mesh verticies and indecies !!
-
-	// set up vertex data (and buffer(s)) and configure vertex attributes
-	// ------------------------------------------------------------------
-	float vertices[] = {
-		 0.10f,0.10f, 0.10f,  // top right
-		 0.25f, -0.25f, 0.0f,  // bottom right
-		-0.85f,  0.85f, 0.0f   // top left
-	};
-	unsigned int indices[] = {  // note that we start from 0!
-		0, 1, 3,  // first Triangle
-	};
-
-
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	// remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	glBindVertexArray(0);
-
-}
-
 
 bool GameEngine::Initialize() {
 
@@ -132,9 +65,8 @@ bool GameEngine::Initialize() {
 	return true;
 }
 
-
 void GameEngine::AddObject(const std::string& name, MeshType meshType, Material& material) {
-	GameObjects_Vector.emplace_back(name, meshType, material);
+	GameObjects_Map.insert( make_pair(name, Object(name, meshType, material)) );
 }
 
 void GameEngine::DrawGame() {
@@ -146,35 +78,34 @@ void GameEngine::DrawGame() {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
-	//int vertexColorLocation = glGetUniformLocation(shaderProgram, "timedColor");
-	//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-
-	// draw our gameobjects
-	for (size_t i = 0; i < GameObjects_Vector.size(); i++)
+	std::map<std::string, Object>::iterator it = GameObjects_Map.begin();
+	for (; it != GameObjects_Map.end() ; ++it)
 	{
-		// TODO make shader value for each object, in order to use different shaders for different objects
-		GameObjects_Vector[i].UpdateDrawing();
+		it->second.UpdateDrawing();
 	}
-
 
 	// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 	// -------------------------------------------------------------------------------
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
-
 }
 
 void GameEngine::StartGameLoop(void (*UpdateGame)())
 {
 	while (!glfwWindowShouldClose(_window))
 	{
-		ProcessInput(this->_window);
+		this->InputManager->Process();
+
 		UpdateGame();
+
 		DrawGame();
 	}
 }
 
+ Object& GameEngine::GetObjectByName(std::string name)
+{
+	return GameObjects_Map.find(name)->second;
+}
 
 GameEngine::~GameEngine()
 {

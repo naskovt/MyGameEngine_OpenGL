@@ -7,8 +7,6 @@ struct SquareMesh : public Mesh {
 
 	SquareMesh() {
 
-		//std::cout << "ctor zero test: " << this->indicesCount << this->verticesCount << this->indices << this->vertices;
-
 		vertices = new float[12]{
 			 0.5f,  0.5f, 0.0f,  // top right
 			 0.5f, -0.5f, 0.0f,  // bottom right
