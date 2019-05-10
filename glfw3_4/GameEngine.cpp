@@ -7,8 +7,8 @@
 //	std::map< std::string, Material > & materials_map_ptr, const char* vertShaderName, const char* fragShaderName) :
 //	_materials_map_ptr ( materials_map_ptr)
 GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName)
-
 {
+	isKeyPressed_W = false;
 
 	// glfw: initialize and configure
 // ------------------------------
@@ -44,10 +44,19 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void GameEngine::processInput(GLFWwindow* window)
+void GameEngine::ProcessInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		this->isKeyPressed_W = true;
+	}
+	else if(false != this->isKeyPressed_W)
+	{
+		this->isKeyPressed_W = false;
+	}
+
 }
 
 
@@ -92,8 +101,8 @@ void LoadTriangle2(unsigned int& VBO, unsigned int& VAO, unsigned int& EBO) {
 	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
 	glBindVertexArray(0);
 
-
 }
+
 
 bool GameEngine::Initialize() {
 
@@ -123,54 +132,55 @@ bool GameEngine::Initialize() {
 	return true;
 }
 
-void GameEngine::StartDrawingLoop() {
 
-	// render loop
-	// -----------
+void GameEngine::AddObject(const std::string& name, MeshType meshType, Material& material) {
+	GameObjects_Vector.emplace_back(name, meshType, material);
+}
 
-	while (!glfwWindowShouldClose(_window))
+void GameEngine::DrawGame() {
+
+	// render fucntions
+
+	// render
+	// ------
+	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+
+	//int vertexColorLocation = glGetUniformLocation(shaderProgram, "timedColor");
+	//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
+	// draw our gameobjects
+	for (size_t i = 0; i < GameObjects_Vector.size(); i++)
 	{
-		// input
-		// -----
-		processInput(_window);
-
-		// render
-		// ------
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-
-		//int vertexColorLocation = glGetUniformLocation(shaderProgram, "timedColor");
-		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-
-		// draw our gameobjects
-		for (size_t i = 0; i < GameObjects_Vector.size(); i++)
-		{
-			// TODO make shader value for each object, in order to use different shaders for different objects
-			GameObjects_Vector[i].UpdateDrawing();
-		}
-
-
-
-		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		// -------------------------------------------------------------------------------
-		glfwSwapBuffers(_window);
-		glfwPollEvents();
+		// TODO make shader value for each object, in order to use different shaders for different objects
+		GameObjects_Vector[i].UpdateDrawing();
 	}
+
+
+	// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+	// -------------------------------------------------------------------------------
+	glfwSwapBuffers(_window);
+	glfwPollEvents();
 
 }
 
+void GameEngine::StartGameLoop(void (*UpdateGame)())
+{
+	while (!glfwWindowShouldClose(_window))
+	{
+		ProcessInput(this->_window);
+		UpdateGame();
+		DrawGame();
+	}
+}
+
+
 GameEngine::~GameEngine()
 {
-	
-
 	//// glfw: terminate, clearing all previously allocated GLFW resources.
 	//// ------------------------------------------------------------------
 	glfwTerminate();
 	//std::cout << "\nengine d~tor..";
-}
-
-void GameEngine::AddObject(const std::string & name, MeshType meshType, Material& material) {
-	GameObjects_Vector.emplace_back(name, meshType, material);
 }
 

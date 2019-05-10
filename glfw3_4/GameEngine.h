@@ -27,18 +27,17 @@ class GameEngine
 public:
 
 	std::vector<Object> GameObjects_Vector;
+	bool isKeyPressed_W;
 
 	GameEngine() = delete;
 
-	//GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName,
-	//
-	//	std::map< std::string, Material >& materials_map_ptr, const char* vertShaderName, const char* fragShaderName);
-
 	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
 
-	void StartDrawingLoop();
 
 	bool Initialize();
+
+	void StartGameLoop(void (*UpdateGame)());
+
 
 	void AddObject(const std::string & name, MeshType meshType, Material & material);
 
@@ -46,18 +45,12 @@ public:
 
 private:
 
-	//void framebuffer_size_callback_(GLFWwindow* window, int width, int height);
-	void processInput(GLFWwindow* window);
-
 	char* vertexShaderSource;
 	char* fragmentShaderSource;
-
-	//std::map< std::string, Material > & _materials_map_ptr;
-
-	////Temporal transform for just 1 triangle object
-	glm::mat4 trans;
-
 	GLFWwindow* _window;
+
+	void ProcessInput(GLFWwindow* window);
+	void DrawGame();
 };
 
 #endif // !GAMEENGINE_H
