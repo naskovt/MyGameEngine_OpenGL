@@ -70,8 +70,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
@@ -138,6 +138,7 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjLoader\cObj.cpp" />
     <ClCompile Include="ShaderLoader.cpp" />
     <ClCompile Include="ShadersCreator.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -148,7 +149,6 @@
     <None Include="shader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />
@@ -158,8 +158,12 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Model_.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="OBJ_Loader.h" />
+    <ClInclude Include="ResourcesObjLoader.h" />
     <ClInclude Include="ShaderLoader.h" />
     <ClInclude Include="ShadersCreator.h" />
+    <ClInclude Include="SimpleObjLoader\cObj.h" />
+    <ClInclude Include="SimpleObjLoader\MeshStructures.h" />
     <ClInclude Include="SquareMesh.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Transform.h" />

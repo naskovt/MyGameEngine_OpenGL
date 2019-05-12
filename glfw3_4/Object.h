@@ -11,6 +11,8 @@
 #include "Model.h"
 #include "Transform.h"
 
+using namespace std;
+
 class Object
 {
 public:
@@ -18,9 +20,13 @@ public:
 
 	Object() = delete;
 	Object(const std::string name, MeshType meshType, Material& material);
+	Object(const std::string name, const std::string& fileName, Material& material);
+	
 	~Object();
 
 	void UpdateDrawing();
+
+	void PrintMeshInfo();
 
 private:
 	std::string _name;

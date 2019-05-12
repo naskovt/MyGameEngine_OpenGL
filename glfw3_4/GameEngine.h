@@ -30,13 +30,15 @@ public:
 
 	GameEngine() = delete;
 	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
+
 	~GameEngine();
 
 	bool Initialize();
 	void StartGameLoop(void (*UpdateGame)());
 	Object& GetObjectByName(std::string name);
-	void AddObject(const std::string & name, MeshType meshType, Material & material);
-
+	void CreateObject(const std::string& name, MeshType meshType, Material& material);
+	void CreateObject(const std::string& name, const std::string& fileName, Material & material);
+	
 private:
 
 	char* vertexShaderSource;

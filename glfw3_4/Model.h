@@ -15,8 +15,13 @@
 class Model
 {
 public:
-	Model(MeshType meshType, Material & material);
+	Model(MeshType meshType, Material& material);
+	Model(std::string fileName, Material & material);
 	~Model();
+
+	Mesh* GetMesh() {
+		return this->_mesh;
+	}
 
 	virtual void RenderModel();
 

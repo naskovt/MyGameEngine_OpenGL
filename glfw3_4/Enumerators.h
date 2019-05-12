@@ -2,5 +2,6 @@
 
 enum MeshType {
 	Triangle,
-	Square
+	Square,
+	ResourcesObj
 };

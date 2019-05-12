@@ -65,8 +65,12 @@ bool GameEngine::Initialize() {
 	return true;
 }
 
-void GameEngine::AddObject(const std::string& name, MeshType meshType, Material& material) {
+void GameEngine::CreateObject(const std::string& name, MeshType meshType, Material& material) {
 	GameObjects_Map.insert( make_pair(name, Object(name, meshType, material)) );
+}
+
+void GameEngine::CreateObject(const std::string& name, const std::string& fileName, Material& material) {
+	GameObjects_Map.insert(make_pair(name, Object(name, fileName, material)));
 }
 
 void GameEngine::DrawGame() {
@@ -104,6 +108,11 @@ void GameEngine::StartGameLoop(void (*UpdateGame)())
 
  Object& GameEngine::GetObjectByName(std::string name)
 {
+	 if (GameObjects_Map.find(name) == GameObjects_Map.end())
+	 {
+		 std::cout << " gameobject not found: " << name;
+	 }
+
 	return GameObjects_Map.find(name)->second;
 }
 

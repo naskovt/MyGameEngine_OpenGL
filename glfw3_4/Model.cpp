@@ -1,10 +1,10 @@
 #include "Model.h"
+#include "ResourcesObjLoader.h"
 
 
 
 Model::Model(MeshType meshType, Material & material) : material(material)
 {
-
 
 	if (meshType == MeshType::Triangle)
 	{
@@ -20,6 +20,10 @@ Model::Model(MeshType meshType, Material & material) : material(material)
 		std::cout << "\n ERROR - not implemented mesh type class !\n";
 	}
 
+	this->LoadMeshToGPU();
+}
+Model::Model(std::string fileName, Material& material) : material(material), _mesh(new ResourcesObjLoader(fileName))
+{
 	this->LoadMeshToGPU();
 };
 
