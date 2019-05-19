@@ -5,8 +5,6 @@
 
 struct TriangleMesh : public Mesh {
 
-
-
 	TriangleMesh() {
 
 		vertices = new float[9]{
@@ -20,8 +18,6 @@ struct TriangleMesh : public Mesh {
 		this->verticesSize = 36;
 		this->indicesSize = 12;
 	};
-
-
 
 };
 

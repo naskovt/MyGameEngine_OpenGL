@@ -4,11 +4,13 @@
 #include <vector>
 #include <map>
 
+#define STB_IMAGE_IMPLEMENTATION
+
 #include "GameEngine.h"
 #include "ShadersCreator.h"
 #include "Enumerators.h"
 #include "Constants.h"
-
+#include "Model_Assimp.h"
 
 using namespace std;
 
@@ -46,22 +48,26 @@ void Initialize() {
 
 void UpdateOnStart() {
 
-	Engine->CreateObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
+	//Engine->CreateObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
 	//Engine->CreateObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
 	//Engine->CreateObject("blue square", MeshType::Square, materials_map.find("Blue_Material")->second);
-	Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
+	
+	//Engine->CreateObject("box", "../Resources/box/pyramid.obj", materials_map.find("Red_Material")->second);
+	//Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
+	//Engine->CreateObject("box", "../Resources/nanosuit/nanosuit.obj", materials_map.find("Red_Material")->second);
+	Engine->CreateObject("box", "../Resources/rock/rock.obj", materials_map.find("Red_Material")->second);
 
-	Engine->GetObjectByName("green triangle").transform.Translate(0.0f, 1.0f, -2.0f);
+	//Engine->GetObjectByName("green triangle").transform.Translate(0.0f, 1.0f, -2.0f);
 
-	//Engine->GetObjectByName("red triangle").transform.Translate(1.0f, 1.0f, -1.0f);
+	Engine->GetObjectByName("red triangle").transform.Translate(1.0f, 1.0f, -1.0f);
 
 	//Engine->GetObjectByName("blue square").transform.Scale(1.2f, 1.2f, 1.2f);
 
 	//Engine->GetObjectByName("blue square").transform.Rotate(45, 1, 0, 0);
 
-	//Engine->GetObjectByName("box").transform.Translate(0.0f, 0.0f, -2.0f);
+	Engine->GetObjectByName("box").transform.Translate(0.0f, 0.0f, -2.0f);
+
 	//Engine->GetObjectByName("box").transform.Rotate(45, 1, 0, 0);
-	Engine->GetObjectByName("box").PrintMeshInfo();
 
 }
 

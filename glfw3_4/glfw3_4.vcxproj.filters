@@ -42,16 +42,13 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
+    <ClCompile Include="Transform.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjLoader\cObj.cpp">
+    <ClCompile Include="BasicModel.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
@@ -63,6 +60,7 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ShaderLoader.h">
@@ -77,17 +75,11 @@
     <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model_.h">
-      <Filter>Source Files\GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
       <Filter>Source Files\Core</Filter>
@@ -110,16 +102,16 @@
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OBJ_Loader.h">
+    <ClInclude Include="Model_Assimp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesObjLoader.h">
+    <ClInclude Include="MeshAssimp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleObjLoader\cObj.h">
+    <ClInclude Include="ModelInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SimpleObjLoader\MeshStructures.h">
+    <ClInclude Include="BasicModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

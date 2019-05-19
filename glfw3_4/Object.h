@@ -8,10 +8,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "ShadersCreator.h"
-#include "Model.h"
+#include "BasicModel.h"
+#include "Model_Assimp.h"
 #include "Transform.h"
 
 using namespace std;
+
 
 class Object
 {
@@ -26,11 +28,9 @@ public:
 
 	void UpdateDrawing();
 
-	void PrintMeshInfo();
-
 private:
 	std::string _name;
-	Model _model;
+	ModelInterface * _model;
 };
 
-#endif
+#endif //OBJECT_H

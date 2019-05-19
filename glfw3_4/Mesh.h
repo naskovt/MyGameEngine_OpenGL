@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MESH_H
+#define MESH_H
 
 class Mesh {
 public:
@@ -11,3 +12,4 @@ public:
 	Mesh() : vertices(nullptr), indices(nullptr), indicesSize(0), verticesSize(0) {};
 
 };
+#endif
