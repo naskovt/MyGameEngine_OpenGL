@@ -22,6 +22,8 @@ GameEngine* Engine;
 void UpdateOnStart();
 void UpdateEachFrame();
 
+map<string, Object>::iterator myObj_Ptr;
+
 void CreateMaterials() {
 
 	shader = ShadersCreator("shader.vert", "shader.frag");
@@ -51,23 +53,21 @@ void UpdateOnStart() {
 	//Engine->CreateObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
 	//Engine->CreateObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
 	//Engine->CreateObject("blue square", MeshType::Square, materials_map.find("Blue_Material")->second);
-	
+
 	//Engine->CreateObject("box", "../Resources/box/pyramid.obj", materials_map.find("Red_Material")->second);
 	//Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
 	//Engine->CreateObject("box", "../Resources/nanosuit/nanosuit.obj", materials_map.find("Red_Material")->second);
 	Engine->CreateObject("box", "../Resources/rock/rock.obj", materials_map.find("Red_Material")->second);
+	
+	//if (myObj_Ptr_Ptr != nullptr)
+	//{
 
-	//Engine->GetObjectByName("green triangle").transform.Translate(0.0f, 1.0f, -2.0f);
+	//}
 
-	Engine->GetObjectByName("red triangle").transform.Translate(1.0f, 1.0f, -1.0f);
+	myObj_Ptr = Engine->GetObjectIT_ByName("box");
 
-	//Engine->GetObjectByName("blue square").transform.Scale(1.2f, 1.2f, 1.2f);
+	myObj_Ptr->second.transform.Translate(0.0f, 0.0f, -2.0f);
 
-	//Engine->GetObjectByName("blue square").transform.Rotate(45, 1, 0, 0);
-
-	Engine->GetObjectByName("box").transform.Translate(0.0f, 0.0f, -2.0f);
-
-	//Engine->GetObjectByName("box").transform.Rotate(45, 1, 0, 0);
 
 }
 
@@ -78,14 +78,14 @@ void UpdateEachFrame() {
 
 	if (Engine->InputManager->isKeyPressed_W)
 	{
-		Engine->GetObjectByName("box").transform.Rotate(rotationSpeed, 1, 0, 0);
+		myObj_Ptr->second.transform.Rotate(rotationSpeed, 1, 0, 0);
 		//Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 1, 0, 0);
 		//Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 1, 0, 0);
 	}
 
 	if (Engine->InputManager->isKeyPressed_S)
 	{
-		Engine->GetObjectByName("box").transform.Rotate(-rotationSpeed, 1, 0, 0);
+		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
 
 		//Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 1, 0, 0);
 		//Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 1, 0, 0);
@@ -93,7 +93,7 @@ void UpdateEachFrame() {
 
 	if (Engine->InputManager->isKeyPressed_A)
 	{
-		Engine->GetObjectByName("box").transform.Rotate(rotationSpeed, 0, 1, 0);
+		myObj_Ptr->second.transform.Rotate(rotationSpeed, 0, 1, 0);
 
 		//Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 0, 1, 0);
 		//Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 0, 1, 0);
@@ -101,7 +101,7 @@ void UpdateEachFrame() {
 
 	if (Engine->InputManager->isKeyPressed_D)
 	{
-		Engine->GetObjectByName("box").transform.Rotate(-rotationSpeed, 0, 1, 0);
+		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
 
 		//Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 0, 1, 0);
 		//Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 0, 1, 0);

@@ -35,7 +35,7 @@ public:
 
 	bool Initialize();
 	void StartGameLoop(void (*UpdateGame)());
-	Object& GetObjectByName(std::string name);
+	map<string, Object>::iterator GetObjectIT_ByName(std::string name);
 	void CreateObject(const std::string& name, MeshType meshType, Material& material);
 	void CreateObject(const std::string& name, const std::string& fileName, Material & material);
 	

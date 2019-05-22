@@ -106,14 +106,9 @@ void GameEngine::StartGameLoop(void (*UpdateGame)())
 	}
 }
 
- Object& GameEngine::GetObjectByName(std::string name)
+map<string, Object>::iterator  GameEngine::GetObjectIT_ByName(std::string name)
 {
-	 if (GameObjects_Map.find(name) == GameObjects_Map.end())
-	 {
-		 std::cout << " gameobject not found: " << name;
-	 }
-
-	return GameObjects_Map.find(name)->second;
+	return GameObjects_Map.find(name);
 }
 
 GameEngine::~GameEngine()
