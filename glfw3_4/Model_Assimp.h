@@ -41,16 +41,7 @@ public:
 	// draws the model, and thus all its meshes
 	void RenderModel() override
 	{
-
 		this->material.GetShader().use();
-
-		// set green - black timed color transition
-		float timeValue = glfwGetTime();
-		float timed_Value = (sin(timeValue) / 2.0f) + 0.5f;
-
-		this->material.GetShader().setFloat("timer", timed_Value);
-		this->material.GetShader().setVec4("color", this->material._color);
-
 
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].Draw(this->material.GetShader());
@@ -76,6 +67,7 @@ private:
 		// process ASSIMP's root node recursively
 		processNode(scene->mRootNode, scene);
 	}
+
 	// processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
 	void processNode(aiNode * node, const aiScene * scene)
 	{
@@ -94,6 +86,7 @@ private:
 		}
 
 	}
+
 	MeshAssimp processMesh(aiMesh * mesh, const aiScene * scene)
 	{
 		// data to fill

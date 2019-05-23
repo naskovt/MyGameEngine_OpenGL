@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;C:\Users\Nasko\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Nasko\source\repos\MyGameEngine_OpenGL\MyGameEngine_OpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\atanas.vasilev\source\repos\GameEngineOpenGL\Extracted_Includes_GLEW_GLFW;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -171,6 +171,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets" Condition="Exists('..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" />
     <Import Project="..\packages\Assimp.3.0.0\build\native\Assimp.targets" Condition="Exists('..\packages\Assimp.3.0.0\build\native\Assimp.targets')" />
+    <Import Project="..\packages\Assimp.symbols.3.0.0\build\native\Assimp.symbols.targets" Condition="Exists('..\packages\Assimp.symbols.3.0.0\build\native\Assimp.symbols.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -178,5 +179,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets'))" />
     <Error Condition="!Exists('..\packages\Assimp.3.0.0\build\native\Assimp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Assimp.3.0.0\build\native\Assimp.targets'))" />
+    <Error Condition="!Exists('..\packages\Assimp.symbols.3.0.0\build\native\Assimp.symbols.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Assimp.symbols.3.0.0\build\native\Assimp.symbols.targets'))" />
   </Target>
 </Project>

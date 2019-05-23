@@ -59,6 +59,13 @@ bool GameEngine::Initialize() {
 		return false;
 	}
 
+	// configure global opengl state
+	// -----------------------------
+	glEnable(GL_DEPTH_TEST);
+
+	// this will disable depth testing => //glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
+
+
 	// uncomment this call to draw in wireframe polygons.
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -66,11 +73,11 @@ bool GameEngine::Initialize() {
 }
 
 void GameEngine::CreateObject(const std::string& name, MeshType meshType, Material& material) {
-	GameObjects_Map.insert( make_pair(name, Object(name, meshType, material)) );
+	GameObjects_Map.insert( make_pair(name, Object(meshType, material)) );
 }
 
 void GameEngine::CreateObject(const std::string& name, const std::string& fileName, Material& material) {
-	GameObjects_Map.insert(make_pair(name, Object(name, fileName, material)));
+	GameObjects_Map.insert(make_pair(name, Object(fileName, material)));
 }
 
 void GameEngine::DrawGame() {
@@ -80,7 +87,7 @@ void GameEngine::DrawGame() {
 	// render
 	// ------
 	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	std::map<std::string, Object>::iterator it = GameObjects_Map.begin();
 	for (; it != GameObjects_Map.end() ; ++it)

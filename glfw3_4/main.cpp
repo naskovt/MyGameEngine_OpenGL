@@ -44,71 +44,47 @@ void Initialize() {
 	// order is important! for now... need to init glfw3()... 
 	CreateMaterials();
 
-
 	UpdateOnStart();
 }
 
 void UpdateOnStart() {
 
-	//Engine->CreateObject("green triangle" , MeshType::Triangle, materials_map.find("Green_Material")->second);
-	//Engine->CreateObject("red triangle", MeshType::Triangle, materials_map.find("Red_Material")->second);
-	//Engine->CreateObject("blue square", MeshType::Square, materials_map.find("Blue_Material")->second);
-
-	//Engine->CreateObject("box", "../Resources/box/pyramid.obj", materials_map.find("Red_Material")->second);
-	//Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
-	//Engine->CreateObject("box", "../Resources/nanosuit/nanosuit.obj", materials_map.find("Red_Material")->second);
-	Engine->CreateObject("box", "../Resources/rock/rock.obj", materials_map.find("Red_Material")->second);
-	
-	//if (myObj_Ptr_Ptr != nullptr)
-	//{
-
-	//}
+	Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
 
 	myObj_Ptr = Engine->GetObjectIT_ByName("box");
+	myObj_Ptr->second.transform.Translate(0.0f, 0.0f, -1.0f);
 
-	myObj_Ptr->second.transform.Translate(0.0f, 0.0f, -2.0f);
-
+	float scaleObj = 0.01f;
+	myObj_Ptr->second.transform.Scale(scaleObj, scaleObj, scaleObj);
 
 }
 
 
-float rotationSpeed = 0.1f;
+float rotationSpeed = 2.0f;
 
 void UpdateEachFrame() {
 
 	if (Engine->InputManager->isKeyPressed_W)
 	{
 		myObj_Ptr->second.transform.Rotate(rotationSpeed, 1, 0, 0);
-		//Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 1, 0, 0);
-		//Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 1, 0, 0);
 	}
 
 	if (Engine->InputManager->isKeyPressed_S)
 	{
 		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
-
-		//Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 1, 0, 0);
-		//Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 1, 0, 0);
 	}
 
 	if (Engine->InputManager->isKeyPressed_A)
 	{
 		myObj_Ptr->second.transform.Rotate(rotationSpeed, 0, 1, 0);
-
-		//Engine->GetObjectByName("green triangle").transform.Rotate(rotationSpeed, 0, 1, 0);
-		//Engine->GetObjectByName("blue square").transform.Rotate(rotationSpeed * 2, 0, 1, 0);
 	}
 
 	if (Engine->InputManager->isKeyPressed_D)
 	{
 		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
-
-		//Engine->GetObjectByName("green triangle").transform.Rotate(-rotationSpeed, 0, 1, 0);
-		//Engine->GetObjectByName("blue square").transform.Rotate(-rotationSpeed * 2, 0, 1, 0);
 	}
 
 }
-
 
 int main()
 {

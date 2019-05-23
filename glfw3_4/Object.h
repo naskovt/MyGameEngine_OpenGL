@@ -20,16 +20,15 @@ class Object
 public:
 	Transform transform;
 
-	Object() = delete;
-	Object(const std::string name, MeshType meshType, Material& material);
-	Object(const std::string name, const std::string& fileName, Material& material);
+	Object();
+	Object( MeshType meshType, Material& material);
+	Object( const std::string& fileName, Material& material);
 	
 	~Object();
 
 	void UpdateDrawing();
 
 private:
-	std::string _name;
 	ModelInterface * _model;
 };
 
