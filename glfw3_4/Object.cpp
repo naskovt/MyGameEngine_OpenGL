@@ -23,6 +23,19 @@ void Object::UpdateDrawing() {
 
 	if (this->_model != nullptr)
 	{
+		if (this->_model->material._color[0] == 1)
+		{
+			// if we are with a red material (rpm gauges animation)
+
+			// set timed color transition
+			float timeValue = glfwGetTime();
+			float timed_Value = (sin(timeValue) / 2.0f) + 0.5f;
+
+			this->_model->material.GetShader().setFloat("timer", timed_Value);
+		}
+
+
+
 		this->_model->material.GetShader().setMatrix4("mvpMatrix", this->transform.GetMVPMatrix());
 
 		this->_model->RenderModel();

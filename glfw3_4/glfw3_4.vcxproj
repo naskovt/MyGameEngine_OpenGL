@@ -144,9 +144,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="metal_shader.frag" />
+    <None Include="metal_shader.vert" />
     <None Include="packages.config" />
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="diffuse_shader.frag" />
+    <None Include="diffuse_shader.vert" />
+    <None Include="rpm_shader.frag" />
+    <None Include="rpm_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h" />

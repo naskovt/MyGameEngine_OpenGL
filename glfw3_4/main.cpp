@@ -14,7 +14,10 @@
 
 using namespace std;
 
-ShadersCreator shader;
+ShadersCreator dashboard_shader;
+ShadersCreator metal_shader;
+ShadersCreator rpm_shader;
+
 std::map< std::string, Material > materials_map;
 
 GameEngine* Engine;
@@ -24,13 +27,17 @@ void UpdateEachFrame();
 
 map<string, Object>::iterator myObj_Ptr;
 
+vector < map<string, Object>::iterator> DashboardParent;
+
 void CreateMaterials() {
 
-	shader = ShadersCreator("shader.vert", "shader.frag");
+	dashboard_shader = ShadersCreator("diffuse_shader.vert", "diffuse_shader.frag");
+	metal_shader = ShadersCreator("metal_shader.vert", "metal_shader.frag");
+	rpm_shader = ShadersCreator("rpm_shader.vert", "rpm_shader.frag");
 
-	materials_map.insert(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
-	materials_map.insert(make_pair("Green_Material", Material(shader, 0, 1, 0, 1)));
-	materials_map.insert(make_pair("Blue_Material", Material(shader, 0, 0, 1, 1)));
+	materials_map.insert(make_pair("Leather_mat", Material(dashboard_shader, 0, 0, 0, 1)));
+	materials_map.insert(make_pair("Metal_mat", Material(metal_shader, 0, 0, 0, 1)));
+	materials_map.insert(make_pair("RPM_mat", Material(rpm_shader, 1, 0, 0, 1)));
 }
 
 
@@ -40,7 +47,7 @@ void Initialize() {
 	Engine = new GameEngine(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, "MyGameEngine");
 
 	//TODO create MaterialsManager -> example solution: Engine.MaterialsManager.AddMaterial(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
-	
+
 	// order is important! for now... need to init glfw3()... 
 	CreateMaterials();
 
@@ -49,13 +56,23 @@ void Initialize() {
 
 void UpdateOnStart() {
 
-	Engine->CreateObject("box", "../Resources/box/box.obj", materials_map.find("Red_Material")->second);
+	Engine->CreateObject("Dashboard", "../Resources/dashboard/dashboard.obj", materials_map.find("Leather_mat")->second);
+	Engine->CreateObject("Gauges", "../Resources/dashboard/gauges.obj", materials_map.find("Metal_mat")->second);
+	Engine->CreateObject("RPM", "../Resources/dashboard/RPM.obj", materials_map.find("RPM_mat")->second);
+	Engine->CreateObject("KPH", "../Resources/dashboard/KPH.obj", materials_map.find("RPM_mat")->second);
 
-	myObj_Ptr = Engine->GetObjectIT_ByName("box");
-	myObj_Ptr->second.transform.Translate(0.0f, 0.0f, -1.0f);
+	DashboardParent.push_back(Engine->GetObjectIT_ByName("Dashboard"));
+	DashboardParent.push_back(Engine->GetObjectIT_ByName("Gauges"));
+	DashboardParent.push_back(Engine->GetObjectIT_ByName("RPM"));
+	DashboardParent.push_back(Engine->GetObjectIT_ByName("KPH"));
 
-	float scaleObj = 0.01f;
-	myObj_Ptr->second.transform.Scale(scaleObj, scaleObj, scaleObj);
+	float scaleObj = 1;
+
+	for (map<string, Object>::iterator objectIt : DashboardParent)
+	{
+		objectIt->second.transform.Translate(0.0f, 0.0f, -5.0f);
+		objectIt->second.transform.Scale(scaleObj, scaleObj, scaleObj);
+	}
 
 }
 
@@ -64,24 +81,28 @@ float rotationSpeed = 2.0f;
 
 void UpdateEachFrame() {
 
-	if (Engine->InputManager->isKeyPressed_W)
+	for (map<string, Object>::iterator objectIt : DashboardParent)
 	{
-		myObj_Ptr->second.transform.Rotate(rotationSpeed, 1, 0, 0);
-	}
 
-	if (Engine->InputManager->isKeyPressed_S)
-	{
-		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
-	}
+		if (Engine->InputManager->isKeyPressed_W)
+		{
+			objectIt->second.transform.Rotate(rotationSpeed, 1, 0, 0);
+		}
 
-	if (Engine->InputManager->isKeyPressed_A)
-	{
-		myObj_Ptr->second.transform.Rotate(rotationSpeed, 0, 1, 0);
-	}
+		if (Engine->InputManager->isKeyPressed_S)
+		{
+			objectIt->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
+		}
 
-	if (Engine->InputManager->isKeyPressed_D)
-	{
-		myObj_Ptr->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
+		if (Engine->InputManager->isKeyPressed_A)
+		{
+			objectIt->second.transform.Rotate(rotationSpeed, 0, 1, 0);
+		}
+
+		if (Engine->InputManager->isKeyPressed_D)
+		{
+			objectIt->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
+		}
 	}
 
 }
