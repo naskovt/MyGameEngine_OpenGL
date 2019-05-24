@@ -35,6 +35,9 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 	}
 
 	this->InputManager = new Input(_window);
+
+	this->Materials = new MaterialsManager();
+
 };
 
 bool GameEngine::Initialize() {
@@ -114,13 +117,17 @@ void GameEngine::StartGameLoop(void (*UpdateGame)())
 	}
 }
 
-map<string, Object>::iterator  GameEngine::GetObjectIT_ByName(std::string name)
+map<string, Object>::iterator  GameEngine::GetObject_It(std::string name)
 {
 	return GameObjects_Map.find(name);
 }
 
 GameEngine::~GameEngine()
 {
+
+	//delete this->InputManager;
+	//delete this->Materials;
+
 	//// glfw: terminate, clearing all previously allocated GLFW resources.
 	//// ------------------------------------------------------------------
 	glfwTerminate();

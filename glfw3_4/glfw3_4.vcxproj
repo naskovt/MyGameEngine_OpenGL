@@ -132,14 +132,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CarEngine.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="BasicModel.cpp" />
+    <ClCompile Include="MaterialsManager.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ShaderLoader.cpp" />
-    <ClCompile Include="ShadersCreator.cpp" />
+    <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,19 +154,21 @@
     <None Include="rpm_shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CarEngine.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="CoreStructures.h" />
     <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialsManager.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshAssimp.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="ModelInterface.h" />
     <ClInclude Include="Model_Assimp.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="ShaderLoader.h" />
-    <ClInclude Include="ShadersCreator.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="SquareMesh.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Transform.h" />

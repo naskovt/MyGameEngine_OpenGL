@@ -11,7 +11,7 @@
 
 #include "stb_image.h"
 
-#include "ShadersCreator.h"
+#include "Shader.h"
 #include "MeshAssimp.h"
 #include "ModelInterface.h"
 #include "Material.h"

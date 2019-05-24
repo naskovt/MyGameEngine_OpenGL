@@ -11,16 +11,16 @@
 
 
 
-class ShadersCreator
+class Shader
 {
 public:
 
 	unsigned int ID;
 
-	ShadersCreator() = default;
+	Shader() = default;
 	// constructor generates the shader on the fly
 	// ------------------------------------------------------------------------
-	ShadersCreator(const char* vertexPath, const char* fragmentPath);
+	Shader(const char* vertexPath, const char* fragmentPath);
 	// activate the shader
 	// ------------------------------------------------------------------------
 	void use();

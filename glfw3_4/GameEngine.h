@@ -14,7 +14,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "ShadersCreator.h"
+#include "MaterialsManager.h"
+#include "Shader.h"
 #include "Material.h"
 #include "TriangleMesh.h"
 #include "Camera.h"
@@ -27,6 +28,7 @@ public:
 
 	Input* InputManager;
 
+	MaterialsManager* Materials;
 
 	GameEngine() = delete;
 	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
@@ -35,7 +37,7 @@ public:
 
 	bool Initialize();
 	void StartGameLoop(void (*UpdateGame)());
-	map<string, Object>::iterator GetObjectIT_ByName(std::string name);
+	map<string, Object>::iterator GetObject_It(std::string name);
 	void CreateObject(const std::string& name, MeshType meshType, Material& material);
 	void CreateObject(const std::string& name, const std::string& fileName, Material & material);
 	

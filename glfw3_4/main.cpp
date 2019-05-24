@@ -4,41 +4,32 @@
 #include <vector>
 #include <map>
 
+// Game Engine headers
 #define STB_IMAGE_IMPLEMENTATION
-
+#include "MaterialsManager.h"
 #include "GameEngine.h"
-#include "ShadersCreator.h"
+#include "Shader.h"
 #include "Enumerators.h"
 #include "Constants.h"
 #include "Model_Assimp.h"
 
+
+// Custom simulation headers
+#include "CarEngine.h"
+
+
 using namespace std;
-
-ShadersCreator dashboard_shader;
-ShadersCreator metal_shader;
-ShadersCreator rpm_shader;
-
-std::map< std::string, Material > materials_map;
-
-GameEngine* Engine;
 
 void UpdateOnStart();
 void UpdateEachFrame();
 
-map<string, Object>::iterator myObj_Ptr;
 
+// Custom simulation variables
 vector < map<string, Object>::iterator> DashboardParent;
-
-void CreateMaterials() {
-
-	dashboard_shader = ShadersCreator("diffuse_shader.vert", "diffuse_shader.frag");
-	metal_shader = ShadersCreator("metal_shader.vert", "metal_shader.frag");
-	rpm_shader = ShadersCreator("rpm_shader.vert", "rpm_shader.frag");
-
-	materials_map.insert(make_pair("Leather_mat", Material(dashboard_shader, 0, 0, 0, 1)));
-	materials_map.insert(make_pair("Metal_mat", Material(metal_shader, 0, 0, 0, 1)));
-	materials_map.insert(make_pair("RPM_mat", Material(rpm_shader, 1, 0, 0, 1)));
-}
+Material* rpm_material;
+GameEngine* Engine;
+CarEngine* carEngine;
+//
 
 
 void Initialize() {
@@ -46,25 +37,24 @@ void Initialize() {
 	// TODO make better multiple shader loading
 	Engine = new GameEngine(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, "MyGameEngine");
 
-	//TODO create MaterialsManager -> example solution: Engine.MaterialsManager.AddMaterial(make_pair("Red_Material", Material(shader, 1, 0, 0, 1)));
-
-	// order is important! for now... need to init glfw3()... 
-	CreateMaterials();
+	Engine->Materials->CreateMaterial("Leather_mat", new Shader("diffuse_shader.vert", "diffuse_shader.frag"));
+	Engine->Materials->CreateMaterial("Metal_mat", new Shader("metal_shader.vert", "metal_shader.frag"));
+	Engine->Materials->CreateMaterial("RPM_mat", new Shader("rpm_shader.vert", "rpm_shader.frag"));
 
 	UpdateOnStart();
 }
 
 void UpdateOnStart() {
 
-	Engine->CreateObject("Dashboard", "../Resources/dashboard/dashboard.obj", materials_map.find("Leather_mat")->second);
-	Engine->CreateObject("Gauges", "../Resources/dashboard/gauges.obj", materials_map.find("Metal_mat")->second);
-	Engine->CreateObject("RPM", "../Resources/dashboard/RPM.obj", materials_map.find("RPM_mat")->second);
-	Engine->CreateObject("KPH", "../Resources/dashboard/KPH.obj", materials_map.find("RPM_mat")->second);
+	Engine->CreateObject("Dashboard", "../Resources/dashboard/dashboard.obj", Engine->Materials->GetMaterial("Leather_mat"));
+	Engine->CreateObject("Gauges", "../Resources/dashboard/gauges.obj", Engine->Materials->GetMaterial("Metal_mat"));
+	Engine->CreateObject("RPM", "../Resources/dashboard/RPM.obj", Engine->Materials->GetMaterial("RPM_mat"));
+	Engine->CreateObject("KPH", "../Resources/dashboard/KPH.obj", Engine->Materials->GetMaterial("RPM_mat"));
 
-	DashboardParent.push_back(Engine->GetObjectIT_ByName("Dashboard"));
-	DashboardParent.push_back(Engine->GetObjectIT_ByName("Gauges"));
-	DashboardParent.push_back(Engine->GetObjectIT_ByName("RPM"));
-	DashboardParent.push_back(Engine->GetObjectIT_ByName("KPH"));
+	DashboardParent.push_back(Engine->GetObject_It("Dashboard"));
+	DashboardParent.push_back(Engine->GetObject_It("Gauges"));
+	DashboardParent.push_back(Engine->GetObject_It("RPM"));
+	DashboardParent.push_back(Engine->GetObject_It("KPH"));
 
 	float scaleObj = 1;
 
@@ -74,10 +64,13 @@ void UpdateOnStart() {
 		objectIt->second.transform.Scale(scaleObj, scaleObj, scaleObj);
 	}
 
+	rpm_material = &Engine->Materials->GetMaterial("RPM_mat");
+	carEngine = new CarEngine(900, 6800, 250, 200, 300);
 }
 
 
 float rotationSpeed = 2.0f;
+float gasValue = 0.0f;
 
 void UpdateEachFrame() {
 
@@ -89,14 +82,14 @@ void UpdateEachFrame() {
 			objectIt->second.transform.Rotate(rotationSpeed, 1, 0, 0);
 		}
 
-		if (Engine->InputManager->isKeyPressed_S)
-		{
-			objectIt->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
-		}
-
 		if (Engine->InputManager->isKeyPressed_A)
 		{
 			objectIt->second.transform.Rotate(rotationSpeed, 0, 1, 0);
+		}
+
+		if (Engine->InputManager->isKeyPressed_S)
+		{
+			objectIt->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
 		}
 
 		if (Engine->InputManager->isKeyPressed_D)
@@ -104,6 +97,21 @@ void UpdateEachFrame() {
 			objectIt->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
 		}
 	}
+
+
+
+	if (Engine->InputManager->isKeyPressed_E)
+	{
+		carEngine->Throttle();
+	}
+	else
+	{
+		carEngine->Idle();
+	}
+
+
+	// TODO Update gas in RPM gauges material
+	rpm_material->GetShader().setFloat("_gasValue", carEngine->GetNormalizedRPM());
 
 }
 

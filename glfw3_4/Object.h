@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "ShadersCreator.h"
+#include "Shader.h"
 #include "BasicModel.h"
 #include "Model_Assimp.h"
 #include "Transform.h"

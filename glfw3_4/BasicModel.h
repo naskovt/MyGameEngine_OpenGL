@@ -5,7 +5,7 @@
 #include "Material.h"
 #include "Enumerators.h"
 
-#include "ShadersCreator.h"
+#include "Shader.h"
 #include "TriangleMesh.h"
 #include "SquareMesh.h"
 #include "ModelInterface.h"
@@ -18,7 +18,6 @@ class BasicModel : public ModelInterface
 public:
 
 	BasicModel(MeshType meshType, Material& mat);
-	//BasicModel(std::string fileName, Material & material);
 	~BasicModel();
 
 	Mesh* GetMesh() {
