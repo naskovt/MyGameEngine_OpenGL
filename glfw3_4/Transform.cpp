@@ -28,6 +28,11 @@ void Transform::Scale(float x, float y, float z)
 	_transformation_Matrix = glm::scale(_transformation_Matrix, glm::vec3(x, y, z));
 }
 
+void Transform::Scale(float scale)
+{
+	_transformation_Matrix = glm::scale(_transformation_Matrix, glm::vec3(scale, scale, scale));
+}
+
 glm::mat4 Transform::GetMVPMatrix()
 {
 	glm::mat4 view_Matrix = glm::mat4(1.0f);

@@ -5,7 +5,6 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec2 TexCoords;
 
-//uniform mat4 mvp_rpm_shader;
 uniform mat4 mvp;
 
 void main()

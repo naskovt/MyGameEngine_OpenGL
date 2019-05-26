@@ -6,4 +6,12 @@ enum MeshType {
 	Square,
 	ResourcesObj,
 };
+//
+//enum TextureType {
+//	_diffuse,
+//	_specular,
+//	_normal,
+//	_alpha
+//};
+
 #endif

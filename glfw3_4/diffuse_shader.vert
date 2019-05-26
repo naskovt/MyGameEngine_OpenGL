@@ -5,10 +5,11 @@ layout (location = 2) in vec2 aTexCoords;
 
 out vec2 TexCoords;
 
-uniform mat4 mvpMatrix;
+//uniform mat4 mvp_diffuse_shader;
+uniform mat4 mvp;
 
 void main()
 {
    TexCoords = aTexCoords;  
-   gl_Position =  mvpMatrix * vec4(aPos, 1.0f);
+   gl_Position =  mvp * vec4(aPos, 1.0f);
 }

@@ -9,12 +9,13 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include "stb_image.h"
 
 #include "Shader.h"
 #include "MeshAssimp.h"
 #include "ModelInterface.h"
 #include "Material.h"
+#include "HelperFunctions.h"
+
 
 #include <string>
 #include <fstream>
@@ -28,12 +29,11 @@ class ModelAssimp : public ModelInterface
 {
 public:
 	/*  Model Data */
-	vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+	//vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 	vector<MeshAssimp> meshes;
 	string directory;
-	bool gammaCorrection;
 
-	ModelAssimp(string const& path, Material& material) : ModelInterface(material), gammaCorrection(false)
+	ModelAssimp(string const& path, Material& material) : ModelInterface(material)
 	{
 		loadModel(path);
 	}
@@ -41,10 +41,38 @@ public:
 	// draws the model, and thus all its meshes
 	void RenderModel() override
 	{
-		this->material.GetShader().use();
 
-		for (unsigned int i = 0; i < meshes.size(); i++)
-			meshes[i].Draw(this->material.GetShader());
+		for (unsigned int meshIndex = 0; meshIndex < meshes.size(); meshIndex++)
+		{
+
+			for (unsigned int textureIndex = 0; textureIndex < this->material._textures_v.size(); textureIndex++)
+			{
+				glActiveTexture(GL_TEXTURE0 + textureIndex); // active proper texture unit before binding
+
+				string name = this->material._textures_v[textureIndex]->type ;
+
+				//std::cout << " Shader ID: " << this->material.GetShader().ID  << "\n Tex name : "
+				//	<< name  << " index : " << textureIndex << " id : " << this->material._textures_v[textureIndex]->id;
+
+				// now set the sampler to the correct texture unit
+				glUniform1i(glGetUniformLocation(this->material.GetShader().ID, name.c_str()), textureIndex);
+				// and finally bind the texture
+				glBindTexture(GL_TEXTURE_2D, this->material._textures_v[textureIndex]->id);
+			}
+
+			// draw mesh
+			glBindVertexArray(meshes[meshIndex].VAO);
+			glDrawElements(GL_TRIANGLES, meshes[meshIndex].indices.size(), GL_UNSIGNED_INT, 0);
+			glBindVertexArray(0);
+
+			// always good practice to set everything back to defaults once configured.
+			glActiveTexture(GL_TEXTURE0);
+
+		}
+		glBindVertexArray(0);
+
+		glActiveTexture(GL_TEXTURE0);
+
 	}
 
 private:
@@ -92,7 +120,7 @@ private:
 		// data to fill
 		vector<Vertex> vertices;
 		vector<unsigned int> indices;
-		vector<Texture> textures;
+		//vector<Texture> textures;
 
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -141,107 +169,11 @@ private:
 			for (unsigned int j = 0; j < face.mNumIndices; j++)
 				indices.push_back(face.mIndices[j]);
 		}
-		// process materials
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
-		// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
-		// Same applies to other texture as the following list summarizes:
-		// diffuse: texture_diffuseN
-		// specular: texture_specularN
-		// normal: texture_normalN
-
-		// 1. diffuse maps
-		vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-		textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		// 2. specular maps
-		vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-		textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-		// 3. normal maps
-		std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-		textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-		// 4. height maps
-		std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-		textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 		// return a mesh object created from the extracted mesh data
-		return MeshAssimp(vertices, indices, textures);
+		return MeshAssimp(vertices, indices);
 	}
 
-	unsigned int TextureFromFile_(const char* path, const string& directory, bool gamma = false)
-	{
-		string filename = string(path);
-		filename = directory + '/' + filename;
-
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-
-		int width, height, nrComponents;
-		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-		if (data)
-		{
-			GLenum format = GL_RGBA;
-
-			if (nrComponents == 1)
-				format = GL_RED;
-			else if (nrComponents == 3)
-				format = GL_RGB;
-			else if (nrComponents == 4)
-				format = GL_RGBA;
-
-
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			std::cout << "Texture failed to load at path: " << path << std::endl;
-			stbi_image_free(data);
-		}
-
-		return textureID;
-	}
-
-	// checks all material textures of a given type and loads the textures if they're not loaded yet.
-	// the required info is returned as a Texture struct.
-	vector<Texture> loadMaterialTextures(aiMaterial * mat, aiTextureType type, string typeName)
-	{
-		vector<Texture> textures;
-		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-		{
-			aiString str;
-			mat->GetTexture(type, i, &str);
-			// check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			bool skip = false;
-			for (unsigned int j = 0; j < textures_loaded.size(); j++)
-			{
-				if (std::strcmp(textures_loaded[j].path.data(), str.C_Str()) == 0)
-				{
-					textures.push_back(textures_loaded[j]);
-					skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
-					break;
-				}
-			}
-			if (!skip)
-			{   // if texture hasn't been loaded already, load it
-				Texture texture;
-				texture.id = TextureFromFile_(str.C_Str(), this->directory);
-				texture.type = typeName;
-				texture.path = str.C_Str();
-				textures.push_back(texture);
-				textures_loaded.push_back(texture);  // store it as texture loaded for entire model, to ensure we won't unnecesery load duplicate textures.
-			}
-		}
-		return textures;
-	}
 };
 
 

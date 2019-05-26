@@ -3,6 +3,7 @@
 
 #include <string>
 #include <glm/glm.hpp>
+#include "Enumerators.h"
 
 struct Vertex {
 	// position
@@ -19,7 +20,9 @@ struct Vertex {
 
 struct Texture {
 	unsigned int id;
+	//TextureType type;
 	std::string type;
+	std::string name;
 	std::string path;
 };
 

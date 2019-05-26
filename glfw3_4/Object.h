@@ -30,6 +30,7 @@ public:
 
 private:
 	ModelInterface * _model;
+	string _mvpName;
 };
 
 #endif //OBJECT_H

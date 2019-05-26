@@ -26,7 +26,7 @@ void UpdateEachFrame();
 
 // Custom simulation variables
 vector < map<string, Object>::iterator> DashboardParent;
-Material* rpm_material;
+Shader* rpm_shader;
 GameEngine* Engine;
 CarEngine* carEngine;
 //
@@ -34,42 +34,44 @@ CarEngine* carEngine;
 
 void Initialize() {
 
-	// TODO make better multiple shader loading
+	// Engine main initialization
 	Engine = new GameEngine(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, "MyGameEngine");
 
-	Engine->Materials->CreateMaterial("Leather_mat", new Shader("diffuse_shader.vert", "diffuse_shader.frag"));
-	Engine->Materials->CreateMaterial("Metal_mat", new Shader("metal_shader.vert", "metal_shader.frag"));
-	Engine->Materials->CreateMaterial("RPM_mat", new Shader("rpm_shader.vert", "rpm_shader.frag"));
+
+	// LOAD RESOURCES
+	Engine->Materials->LoadShaders(vector<pair<string, string>>{ make_pair("background_shader.vert", "background_shader.frag"),
+																make_pair( "rpm_shader.vert", "rpm_shader.frag") });
+	Engine->Materials->LoadTextures("../Resources/textures", 
+		vector<string>{ "buffer_allocator.png", "dashboard_d.png", "rpm_d.png", "rpm_a.png"});
+
+	// CREATE MATERIALS
+	Engine->Materials->CreateMaterial("RPM_bar_mat", "rpm_shader", vector<string>{ "rpm_d.png", "rpm_a.png"});
+	Engine->Materials->CreateMaterial("Background_mat", "background_shader", vector<string>{ "dashboard_d.png"});
+
 
 	UpdateOnStart();
 }
 
 void UpdateOnStart() {
 
-	Engine->CreateObject("Dashboard", "../Resources/dashboard/dashboard.obj", Engine->Materials->GetMaterial("Leather_mat"));
-	Engine->CreateObject("Gauges", "../Resources/dashboard/gauges.obj", Engine->Materials->GetMaterial("Metal_mat"));
-	Engine->CreateObject("RPM", "../Resources/dashboard/RPM.obj", Engine->Materials->GetMaterial("RPM_mat"));
-	Engine->CreateObject("KPH", "../Resources/dashboard/KPH.obj", Engine->Materials->GetMaterial("RPM_mat"));
+	Engine->CreateObject("RPM_bar", "../Resources/models/quad.obj", Engine->Materials->GetMaterial("RPM_bar_mat"));
+	Engine->CreateObject("Background", "../Resources/models/quad.obj", Engine->Materials->GetMaterial("Background_mat"));
 
-	DashboardParent.push_back(Engine->GetObject_It("Dashboard"));
-	DashboardParent.push_back(Engine->GetObject_It("Gauges"));
-	DashboardParent.push_back(Engine->GetObject_It("RPM"));
-	DashboardParent.push_back(Engine->GetObject_It("KPH"));
 
-	float scaleObj = 1;
+	DashboardParent.push_back(Engine->GetObject_It("Background"));
+	DashboardParent.push_back(Engine->GetObject_It("RPM_bar"));
 
-	for (map<string, Object>::iterator objectIt : DashboardParent)
-	{
-		objectIt->second.transform.Translate(0.0f, 0.0f, -5.0f);
-		objectIt->second.transform.Scale(scaleObj, scaleObj, scaleObj);
-	}
+	Engine->GetObject_It("Background")->second.transform.Scale(3);
+	Engine->GetObject_It("RPM_bar")->second.transform.Scale(0.7);
+	Engine->GetObject_It("RPM_bar")->second.transform.Translate(-0.3, 0, 0);
 
-	rpm_material = &Engine->Materials->GetMaterial("RPM_mat");
-	carEngine = new CarEngine(900, 6800, 250, 200, 300);
+	rpm_shader = &Engine->Materials->GetMaterial("RPM_bar_mat").GetShader();
+
+	carEngine = new CarEngine(900, 6800, 3.7,3,800);
 }
 
 
-float rotationSpeed = 2.0f;
+float rotationSpeed = 0.1f;
 float gasValue = 0.0f;
 
 void UpdateEachFrame() {
@@ -111,8 +113,10 @@ void UpdateEachFrame() {
 
 
 	// TODO Update gas in RPM gauges material
-	rpm_material->GetShader().setFloat("_gasValue", carEngine->GetNormalizedRPM());
 
+	rpm_shader->setFloat("_gasValue", carEngine->GetNormalizedRPM());
+
+	//cout << "RPM : " << carEngine->GetNormalizedRPM() << endl;;
 }
 
 int main()

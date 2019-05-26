@@ -82,6 +82,12 @@
     <None Include="metal_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
+    <None Include="background_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="background_shader.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Object.h">
@@ -92,9 +98,6 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stb_image.h">
-      <Filter>Source Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="Model_Assimp.h">
       <Filter>Header Files</Filter>
@@ -139,6 +142,12 @@
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperFunctions.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>

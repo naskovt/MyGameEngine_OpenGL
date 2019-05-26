@@ -4,18 +4,20 @@
 #include <glad/glad.h>
 
 #include <string>
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-
+#include "HelperFunctions.h"
 
 class Shader
 {
 public:
 
 	unsigned int ID;
+	const std::string name;
 
 	Shader() = default;
 	// constructor generates the shader on the fly
@@ -37,9 +39,12 @@ public:
 	void setMatrix4(const std::string& name, glm::mat4 value) const;
 
 private:
+	
+	
 	// utility function for checking shader compilation/linking errors.
 	// ------------------------------------------------------------------------
 	void checkCompileErrors(unsigned int shader, std::string type);
+
 
 };
 #endif
