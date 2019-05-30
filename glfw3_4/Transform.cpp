@@ -33,7 +33,7 @@ void Transform::Scale(float scale)
 	_transformation_Matrix = glm::scale(_transformation_Matrix, glm::vec3(scale, scale, scale));
 }
 
-glm::mat4 Transform::GetMVPMatrix()
+PVM_Matrix Transform::GetMVPMatrix()
 {
 	glm::mat4 view_Matrix = glm::mat4(1.0f);
 	glm::mat4 projection_Matrix = glm::mat4(1.0f);
@@ -42,8 +42,8 @@ glm::mat4 Transform::GetMVPMatrix()
 	view_Matrix = glm::translate(view_Matrix, glm::vec3(0.0f, 0.0f, -3.0f));
 
 	// TODO - should be with camera object - applying perspective
-	projection_Matrix = glm::perspective(glm::radians(45.0f), (float)(Constants::SCREEN_WIDTH / Constants::SCREEN_HEIGHT), 0.1f, 100.0f);
+	projection_Matrix = glm::perspective(glm::radians(45.0f), (float)(SCREEN_WIDTH / SCREEN_HEIGHT), 0.1f, 100.0f);
 
 	// MULTIPLY all transformations to create 3d view in the 2d window
-	return projection_Matrix * view_Matrix * _transformation_Matrix;
+	return PVM_Matrix (projection_Matrix, view_Matrix, _transformation_Matrix);
 }

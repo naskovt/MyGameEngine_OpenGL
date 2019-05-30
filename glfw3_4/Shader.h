@@ -18,6 +18,7 @@ public:
 
 	unsigned int ID;
 	const std::string name;
+	bool isSeparateMVP = false;
 
 	Shader() = default;
 	// constructor generates the shader on the fly

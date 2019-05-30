@@ -144,20 +144,24 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="background_shader.frag" />
-    <None Include="background_shader.vert" />
     <None Include="ClassDiagram.cd" />
-    <None Include="metal_shader.frag" />
-    <None Include="metal_shader.vert" />
     <None Include="packages.config" />
-    <None Include="diffuse_shader.frag" />
-    <None Include="diffuse_shader.vert" />
-    <None Include="rpm_shader.frag" />
-    <None Include="rpm_shader.vert" />
+    <None Include="shaders\background_shader.frag" />
+    <None Include="shaders\background_shader.vert" />
+    <None Include="shaders\car_shader.frag" />
+    <None Include="shaders\car_shader.vert" />
+    <None Include="shaders\diffuse_shader.frag" />
+    <None Include="shaders\diffuse_shader.vert" />
+    <None Include="shaders\light_shader.frag" />
+    <None Include="shaders\light_shader.vert" />
+    <None Include="shaders\metal_shader.frag" />
+    <None Include="shaders\metal_shader.vert" />
+    <None Include="shaders\rpm_shader.frag" />
+    <None Include="shaders\rpm_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CarEngine.h" />
-    <ClInclude Include="Constants.h" />
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="CoreStructures.h" />
     <ClInclude Include="Enumerators.h" />
     <ClInclude Include="GameEngine.h" />

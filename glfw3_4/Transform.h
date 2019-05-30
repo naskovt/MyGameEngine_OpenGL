@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "CoreStructures.h"
 
 class Transform
 {
@@ -11,7 +12,7 @@ public:
 
 	Transform();
 	~Transform();
-	glm::mat4 GetMVPMatrix();
+	PVM_Matrix GetMVPMatrix();
 
 
 	void Translate(float x, float y, float z);

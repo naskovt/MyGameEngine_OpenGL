@@ -8,6 +8,7 @@
 
 #include "Shader.h"
 #include "Material.h"
+#include "Constants.h"
 #include "CoreStructures.h"
 #include "HelperFunctions.h"
 
@@ -25,7 +26,7 @@ public:
 
 	void LoadTextures(string path, vector<string> textureNames);
 
-	void LoadShaders(vector< pair<string, string> > shadersNames);
+	void LoadShaders(vector<string> shadersNames);
 
 	void CreateMaterial(const string& name, Shader* shader);
 

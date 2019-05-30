@@ -11,6 +11,7 @@
 #include "BasicModel.h"
 #include "Model_Assimp.h"
 #include "Transform.h"
+#include "CoreStructures.h"
 
 using namespace std;
 

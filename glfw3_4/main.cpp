@@ -4,13 +4,15 @@
 #include <vector>
 #include <map>
 
-// Game Engine headers
+#include "Definitions.h"
+
 #define STB_IMAGE_IMPLEMENTATION
+
+// Game Engine headers
 #include "MaterialsManager.h"
 #include "GameEngine.h"
 #include "Shader.h"
 #include "Enumerators.h"
-#include "Constants.h"
 #include "Model_Assimp.h"
 
 
@@ -26,31 +28,60 @@ void UpdateEachFrame();
 
 // Custom simulation variables
 vector < map<string, Object>::iterator> DashboardParent;
-Shader* rpm_shader;
 GameEngine* Engine;
 CarEngine* carEngine;
-Object* turntable;
-float updateRateFix;
-//
 
+Transform* car_t;
+Shader* rpm_shader;
+
+float updateRateFix;
+float light_color[] = { 0.8f, 0.8f ,0.8f ,1 };
+//
+void InitCar() {
+
+	Shader* car_shader = &Engine->Materials->GetMaterial("Car_mat").GetShader();
+	car_t = &Engine->GetObject_It("Car")->second.transform;
+
+	car_shader->isSeparateMVP = true;
+	car_shader->setVec4("lightColor", light_color);
+	//car_shader->setMatrix4("lightPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().Model);
+	//car_shader->setMatrix4("viewPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().View);
+
+	car_t->Scale(0.10);
+	car_t->Translate(5, 0, 0);
+	car_t->Rotate(30, 1, 0, 0);
+}
+
+
+void InitLightSource() {
+
+	Transform* light_t = &Engine->GetObject_It("Light")->second.transform;
+	Shader* light_shader = &Engine->Materials->GetMaterial("Light_mat").GetShader();
+
+	light_t->Translate(-0.3, 0, 0);
+	light_t->Scale(0.1f);
+	light_shader->use();
+	light_shader->setFloat("l_Color", 0.9f);
+}
 
 void Initialize() {
 
 	// Engine main initialization
-	Engine = new GameEngine(Constants::SCREEN_WIDTH, Constants::SCREEN_HEIGHT, "MyGameEngine");
+	Engine = new GameEngine(SCREEN_WIDTH, SCREEN_HEIGHT, "MyGameEngine");
 
 
 	// LOAD RESOURCES
-	Engine->Materials->LoadShaders(vector<pair<string, string>>{ make_pair("background_shader.vert", "background_shader.frag"),
-																make_pair( "rpm_shader.vert", "rpm_shader.frag"),
-																make_pair("diffuse_shader.vert", "diffuse_shader.frag")});
-	Engine->Materials->LoadTextures("../Resources/textures", 
-		vector<string>{ "buffer_allocator.png", "dashboard_d.png", "box_d.jpg", "rpm_d.png", "rpm_a.png"});
+	Engine->Materials->LoadShaders(vector<string>{ "background_shader", "rpm_shader", "car_shader", "light_shader", "diffuse_shader" });
+
+	Engine->Materials->LoadTextures("../Resources/textures",
+		vector<string>{ "buffer_allocator.png", "dashboard_d.png", "box_d.jpg", "car_d.jpg", "rpm_d.png", "rpm_a.png"});
 
 	// CREATE MATERIALS
 	Engine->Materials->CreateMaterial("RPM_bar_mat", "rpm_shader", vector<string>{ "rpm_d.png", "rpm_a.png"});
 	Engine->Materials->CreateMaterial("Background_mat", "background_shader", vector<string>{ "dashboard_d.png"});
 	Engine->Materials->CreateMaterial("Box_mat", "diffuse_shader", vector<string>{ "box_d.jpg"});
+	Engine->Materials->CreateMaterial("Car_mat", "car_shader", vector<string>{ "car_d.jpg"});
+	Engine->Materials->CreateMaterial("Light_mat", "light_shader");
 
 
 	UpdateOnStart();
@@ -58,20 +89,15 @@ void Initialize() {
 
 void UpdateOnStart() {
 
-	updateRateFix = 0.1;
+	updateRateFix = 5;
 
-	Engine->CreateObject("RPM_bar", "../Resources/models/quad.obj", Engine->Materials->GetMaterial("RPM_bar_mat"));
-	Engine->CreateObject("Background", "../Resources/models/quad.obj", Engine->Materials->GetMaterial("Background_mat"));
-	Engine->CreateObject("Car", "../Resources/models/box.obj", Engine->Materials->GetMaterial("Box_mat"));
+	const string modelsFolder = "../Resources/models/";
 
+	Engine->CreateObject("RPM_bar", modelsFolder+ "quad.obj", Engine->Materials->GetMaterial("RPM_bar_mat"));
+	Engine->CreateObject("Background", modelsFolder + "quad.obj", Engine->Materials->GetMaterial("Background_mat"));
+	Engine->CreateObject("Car", modelsFolder + "ford.obj", Engine->Materials->GetMaterial("Car_mat"));
+	Engine->CreateObject("Light", modelsFolder + "box.obj", Engine->Materials->GetMaterial("Light_mat"));
 
-	DashboardParent.push_back(Engine->GetObject_It("Car"));
-
-	turntable = &Engine->GetObject_It("Car")->second;
-
-	turntable->transform.Scale(0.2);
-	turntable->transform.Translate(4, 0, 0);
-	turntable->transform.Rotate(30, 1, 0, 0);
 
 	Engine->GetObject_It("Background")->second.transform.Scale(3);
 	Engine->GetObject_It("RPM_bar")->second.transform.Scale(0.7);
@@ -79,7 +105,10 @@ void UpdateOnStart() {
 
 	rpm_shader = &Engine->Materials->GetMaterial("RPM_bar_mat").GetShader();
 
-	carEngine = new CarEngine(900, 6800, 37 * updateRateFix, 30 * updateRateFix,1500);
+	InitCar();
+	InitLightSource();
+
+	carEngine = new CarEngine(900, 6800, 37 * updateRateFix, 30 * updateRateFix, 1500);
 }
 
 
@@ -122,13 +151,9 @@ void UpdateEachFrame() {
 		carEngine->Idle();
 	}
 
-	turntable->transform.Rotate(1* updateRateFix,0,1,0);
-
-	// TODO Update gas in RPM gauges material
+	car_t->Rotate(0.4 * updateRateFix,0,1,0);
 
 	rpm_shader->setFloat("_gasValue", carEngine->GetNormalizedRPM());
-
-	//cout << "RPM : " << carEngine->GetNormalizedRPM() << endl;;
 }
 
 int main()

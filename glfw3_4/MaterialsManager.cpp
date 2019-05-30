@@ -14,14 +14,13 @@ void MaterialsManager::LoadTextures(string path, vector<string> textureNames) {
 	}
 }
 
-void MaterialsManager::LoadShaders(vector< pair<string, string> > shadersNames) {
+void MaterialsManager::LoadShaders(vector<string> shadersNames) {
 
 
 	///  Input names in order: vertex, fragment 
-
-	for (pair<string, string> pairName : shadersNames)
+	for (string name : shadersNames)
 	{
-		this->_shaders_map.emplace(Helper::GetNameOnly(pairName.first), Shader(pairName.first.c_str(), pairName.second.c_str()));
+		this->_shaders_map.emplace(name, Shader( (ShadersFolder + name +  VertexShaderExtension).c_str() , (ShadersFolder + name + FragmentShaderExtension).c_str() ) );
 	}
 }
 

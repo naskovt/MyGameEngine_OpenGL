@@ -36,8 +36,20 @@ void Object::UpdateDrawing() {
 		//	this->_model->material.GetShader().setFloat("timer", timed_Value);
 		//}
 
-		this->_model->material.GetShader().setMatrix4("mvp", this->transform.GetMVPMatrix());
-
+		if (this->_model->material.GetShader().isSeparateMVP)
+		{
+			this->_model->material.GetShader().setMatrix4("model", this->transform.GetMVPMatrix().Model);
+			this->_model->material.GetShader().setMatrix4("view", this->transform.GetMVPMatrix().View);
+			this->_model->material.GetShader().setMatrix4("projection", this->transform.GetMVPMatrix().Projection);
+		}
+		else
+		{
+			// we multiply the matrices in reversed order, important!
+			this->_model->material.GetShader().setMatrix4("mvp",this->transform.GetMVPMatrix().Projection
+																	* this->transform.GetMVPMatrix().View
+																	* this->transform.GetMVPMatrix().Model);
+		}
+		
 		this->_model->RenderModel();
 	}
 

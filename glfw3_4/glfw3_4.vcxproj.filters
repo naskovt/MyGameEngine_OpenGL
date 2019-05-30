@@ -64,28 +64,40 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
-    <None Include="diffuse_shader.frag">
+    <None Include="shaders\car_shader.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="diffuse_shader.vert">
+    <None Include="shaders\car_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="rpm_shader.frag">
+    <None Include="shaders\light_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="rpm_shader.vert">
+    <None Include="shaders\light_shader.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="metal_shader.frag">
+    <None Include="shaders\diffuse_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="metal_shader.vert">
+    <None Include="shaders\metal_shader.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="background_shader.frag">
+    <None Include="shaders\metal_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
-    <None Include="background_shader.vert">
+    <None Include="shaders\rpm_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\rpm_shader.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\background_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\background_shader.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\diffuse_shader.frag">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>
@@ -126,9 +138,6 @@
     <ClInclude Include="MaterialsManager.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Enumerators.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
@@ -148,6 +157,9 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="stb_image.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Definitions.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
   </ItemGroup>
