@@ -35,16 +35,17 @@ Transform* car_t;
 Shader* rpm_shader;
 
 float updateRateFix;
-float light_color[] = { 0.8f, 0.8f ,0.8f ,1 };
+float light_color[] = { 0.8f, 0.8f ,0.8f };
 //
 void InitCar() {
 
 	Shader* car_shader = &Engine->Materials->GetMaterial("Car_mat").GetShader();
 	car_t = &Engine->GetObject_It("Car")->second.transform;
 
+	car_shader->use();
 	car_shader->isSeparateMVP = true;
-	car_shader->setVec4("lightColor", light_color);
-	//car_shader->setMatrix4("lightPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().Model);
+	car_shader->setVec3("lightColor", light_color);
+	car_shader->setVec3("lightPos", Engine->GetObject_It("Light")->second.transform.GetPosition());
 	//car_shader->setMatrix4("viewPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().View);
 
 	car_t->Scale(0.10);
@@ -58,8 +59,8 @@ void InitLightSource() {
 	Transform* light_t = &Engine->GetObject_It("Light")->second.transform;
 	Shader* light_shader = &Engine->Materials->GetMaterial("Light_mat").GetShader();
 
-	light_t->Translate(-0.3, 0, 0);
-	light_t->Scale(0.1f);
+	light_t->Translate(-0.3, 1, 0);
+	light_t->Scale(0.3f);
 	light_shader->use();
 	light_shader->setFloat("l_Color", 0.9f);
 }
@@ -105,8 +106,8 @@ void UpdateOnStart() {
 
 	rpm_shader = &Engine->Materials->GetMaterial("RPM_bar_mat").GetShader();
 
-	InitCar();
 	InitLightSource();
+	InitCar();
 
 	carEngine = new CarEngine(900, 6800, 37 * updateRateFix, 30 * updateRateFix, 1500);
 }

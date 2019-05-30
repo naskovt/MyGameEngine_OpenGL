@@ -6,6 +6,6 @@ uniform float l_Color;
 
 void main()
 {
-	//FragColor = vec4(l_Color);
-	//FragColor.a = 1;
+	FragColor = vec4(l_Color);
+	FragColor.a = 1;
 }

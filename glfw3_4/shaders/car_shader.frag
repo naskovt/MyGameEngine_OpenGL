@@ -5,12 +5,12 @@ in vec3 Normal;
 in vec3 FragPos;  
   
 //uniform vec3 viewPos;
-//uniform vec3 lightPos; 
+uniform vec3 lightPos; 
 uniform vec3 lightColor; 
 uniform float ambientIntensity; 
 
 vec3 viewPos = vec3(1.0);
-vec3 lightPos = vec3(1.0); 
+//vec3 lightPos = vec3(1.0); 
 //vec3 lightColor = vec3(0.7); 
 
 vec3 objectColor = vec3(0.7);
@@ -36,8 +36,8 @@ void main()
         
 
     vec3 result = (ambient + diffuse + specular) * objectColor;
-    //FragColor = vec4(result, 1.0);
+    FragColor = vec4(result, 1.0);
 
-    FragColor = vec4(0.5,0.5,0.5, 1.0);
-    FragColor.a = 0.5;
+//    FragColor = vec4(0.5,0.5,0.5, 1.0);
+//    FragColor.a = 0.5;
 }

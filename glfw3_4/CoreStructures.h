@@ -5,6 +5,12 @@
 #include <glm/glm.hpp>
 #include "Enumerators.h"
 
+struct Vector3 {
+	float x;
+	float y;
+	float z;
+};
+
 struct PVM_Matrix {
 
 	PVM_Matrix(glm::mat4 P, glm::mat4 V, glm::mat4 M) : Projection(P),View(V),Model(M) {};

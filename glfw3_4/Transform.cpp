@@ -15,6 +15,10 @@ Transform::~Transform()
 void Transform::Translate(float x, float y, float z)
 {
 	_transformation_Matrix = glm::translate(_transformation_Matrix, glm::vec3(x, y, z));
+
+	this->position.x += x;
+	this->position.y += y;
+	this->position.z += z;
 }
 
 void Transform::Rotate(float angle, float xAxis, float yAxis, float zAxis)
@@ -47,3 +51,13 @@ PVM_Matrix Transform::GetMVPMatrix()
 	// MULTIPLY all transformations to create 3d view in the 2d window
 	return PVM_Matrix (projection_Matrix, view_Matrix, _transformation_Matrix);
 }
+
+
+Vector3 Transform::GetPosition() const {
+	return this->position;
+}
+
+//std::vector<float> Transform::GetPosition_Array() const {
+//
+//	return std::vector<float>()  = {this->position.x, this->position.y, this->position.z};
+//}
