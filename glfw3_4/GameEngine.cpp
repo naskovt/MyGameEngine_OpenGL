@@ -2,7 +2,7 @@
 #include "GameEngine.h"
 #include "Constants.h"
 
-GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName)
+GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName, bool wireframeRendering) : m_WireframeRendering(wireframeRendering)
 {
 
 	// glfw: initialize and configure
@@ -70,17 +70,24 @@ bool GameEngine::Initialize() {
 	// this will disable depth testing => //glDepthFunc(GL_ALWAYS); // always pass the depth test (same effect as glDisable(GL_DEPTH_TEST))
 
 
-	// uncomment this call to draw in wireframe polygons.
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	// this call draws in wireframe polygons.
+	if (m_WireframeRendering)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 
 	return true;
 }
 
-void GameEngine::CreateObject(const std::string& name, MeshType meshType, Material& material) {
+void GameEngine::CreateObject(const std::string& name, const MeshType meshType, const Material& material) {
 	GameObjects_Map.insert( make_pair(name, Object(meshType, material)) );
 }
 
-void GameEngine::CreateObject(const std::string& name, const std::string& fileName, Material& material) {
+void GameEngine::CreateObject(const std::string& name, const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material) {
+	GameObjects_Map.insert( make_pair(name, Object(meshType, info, material)) );
+}
+
+void GameEngine::CreateObject(const std::string& name, const std::string& fileName, const Material& material) {
 	GameObjects_Map.insert(make_pair(name, Object(fileName, material)));
 }
 
@@ -120,14 +127,21 @@ void GameEngine::StartGameLoop(void (*UpdateGame)())
 
 map<string, Object>::iterator  GameEngine::GetObject_It(std::string name)
 {
-	return GameObjects_Map.find(name);
+	const auto result = GameObjects_Map.find(name);
+
+	if (result == GameObjects_Map.end())
+	{
+		cout << " Error: Gameobject: " << name << " not found! " << endl; 
+	}
+	
+	return result;
 }
 
 GameEngine::~GameEngine()
 {
 
-	//delete this->InputManager;
-	//delete this->Materials;
+	delete this->InputManager;
+	delete this->Materials;
 
 	//// glfw: terminate, clearing all previously allocated GLFW resources.
 	//// ------------------------------------------------------------------

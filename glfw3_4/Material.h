@@ -18,7 +18,7 @@ public:
 	Material(Shader& shader, std::vector<Texture*> textures_v);
 	Material(Shader& shader, float r, float g, float b, float a);
 
-	Shader& GetShader();
+	Shader& GetShader() const;
 
 	~Material();
 private:

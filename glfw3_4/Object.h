@@ -22,8 +22,9 @@ public:
 	Transform transform;
 
 	Object();
-	Object( MeshType meshType, Material& material);
-	Object( const std::string& fileName, Material& material);
+	Object( const MeshType meshType, const Material& material);
+	Object( const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material);
+	Object( const std::string& fileName, const Material& material);
 	
 	~Object();
 

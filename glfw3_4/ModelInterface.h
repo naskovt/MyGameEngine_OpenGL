@@ -7,9 +7,9 @@ public:
 
 	ModelInterface() = delete;
 
-	ModelInterface(Material& mat) : material(mat) {};
+	ModelInterface(const Material& mat) : material(mat) {};
 	
-	Material& material;
+	const Material& material;
 	
 	virtual void RenderModel()  = 0;
 

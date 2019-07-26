@@ -15,9 +15,15 @@ struct TriangleMesh : public Mesh {
 
 		indices = new unsigned int[3]{ 0,1,2 };
 
-		this->verticesSize = 36;
-		this->indicesSize = 12;
+		this->verticesSize = 9;
+		this->indicesSize = 3;
 	};
+
+	~TriangleMesh()
+	{
+		delete[] vertices;
+		delete[] indices;
+	}
 
 };
 

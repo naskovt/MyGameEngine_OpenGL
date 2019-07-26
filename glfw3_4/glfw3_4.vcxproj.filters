@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{707604c6-1803-456c-a75a-781ef668be3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Meshes">
+      <UniqueIdentifier>{96807c36-0735-4f5a-b8a9-d8823b4c596a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,16 +63,19 @@
     <ClCompile Include="MaterialsManager.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
+    <ClCompile Include="SphereMesh.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="PrismMesh.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="PyramidMesh.cpp">
+      <Filter>Source Files\Meshes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
     <None Include="packages.config" />
-    <None Include="shaders\car_shader.frag">
-      <Filter>Source Files\shaders</Filter>
-    </None>
-    <None Include="shaders\car_shader.vert">
-      <Filter>Source Files\shaders</Filter>
-    </None>
     <None Include="shaders\light_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
@@ -98,6 +104,12 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="shaders\diffuse_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\phong_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\phong_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>
@@ -161,6 +173,15 @@
     </ClInclude>
     <ClInclude Include="Definitions.h">
       <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PrismMesh.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereMesh.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="PyramidMesh.h">
+      <Filter>Header Files\Meshes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

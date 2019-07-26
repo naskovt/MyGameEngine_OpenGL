@@ -4,7 +4,9 @@
 enum MeshType {
 	Triangle,
 	Square,
-	ResourcesObj,
+	Prism,
+	Sphere,
+	Pyramid,
 };
 //
 //enum TextureType {

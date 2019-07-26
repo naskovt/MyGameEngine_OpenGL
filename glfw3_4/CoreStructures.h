@@ -6,14 +6,17 @@
 #include "Enumerators.h"
 
 struct Vector3 {
-	float x;
-	float y;
-	float z;
+
+	Vector3() :x(0), y(0), z(0) {};
+
+	float x = 0;
+	float y = 0;
+	float z = 0;
 };
 
 struct PVM_Matrix {
 
-	PVM_Matrix(glm::mat4 P, glm::mat4 V, glm::mat4 M) : Projection(P),View(V),Model(M) {};
+	PVM_Matrix(glm::mat4 P, glm::mat4 V, glm::mat4 M) : Projection(P), View(V), Model(M) {};
 
 	glm::mat4 Projection;
 	glm::mat4 View;
@@ -36,6 +39,16 @@ struct Texture {
 
 	std::string name;
 	std::string path;
+};
+
+struct MeshPrimitiveInfo{
+	float	radius	= 0;
+	float	height	= 0;
+	int		sides	= 0;
+	bool	smooth	= true;
+
+	MeshPrimitiveInfo(float radius, int sides, float height) : radius(radius), height(height), sides(sides), smooth(false){};
+	MeshPrimitiveInfo(float radius, int sides, bool smooth) : radius(radius), height(0), sides(sides), smooth(smooth){};
 };
 
 #endif // CORE_STRUCTURES_H

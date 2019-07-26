@@ -31,15 +31,16 @@ public:
 	MaterialsManager* Materials;
 
 	GameEngine() = delete;
-	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName);
+	GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_HEIGHT_set, const char* windowName, bool wireframeRendering);
 
 	~GameEngine();
 
 	bool Initialize();
 	void StartGameLoop(void (*UpdateGame)());
 	map<string, Object>::iterator GetObject_It(std::string name);
-	void CreateObject(const std::string& name, MeshType meshType, Material& material);
-	void CreateObject(const std::string& name, const std::string& fileName, Material & material);
+	void CreateObject(const std::string& name, const MeshType meshType, const Material& material);
+	void CreateObject(const std::string& name, const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material);
+	void CreateObject(const std::string& name, const std::string& fileName, const Material& material); 
 	
 private:
 
@@ -47,6 +48,7 @@ private:
 	char* fragmentShaderSource;
 	GLFWwindow* _window;
 	std::map< std::string, Object > GameObjects_Map;
+	bool m_WireframeRendering = false;
 
 	void DrawGame();
 };

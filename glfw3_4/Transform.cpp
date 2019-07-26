@@ -3,7 +3,7 @@
 
 
 
-Transform::Transform() : _transformation_Matrix(glm::mat4(1.0f))
+Transform::Transform() : _transformation_Matrix(glm::mat4(1.0f)) , position()
 {
 };
 

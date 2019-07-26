@@ -5,14 +5,19 @@ Object::Object() :  transform()
 {
 };
 
-Object::Object( MeshType meshType, Material& material) : transform() {
+Object::Object( const MeshType meshType, const Material& material) : transform() {
 
 	BasicModel* basicModel = new BasicModel(meshType, material);
 	_model = dynamic_cast<ModelInterface*> (basicModel);
-
 };
 
-Object::Object( const std::string& fileName, Material& material) : transform(){
+Object::Object( const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material) : transform() {
+
+	BasicModel* basicModel = new BasicModel(meshType, info, material);
+	_model = dynamic_cast<ModelInterface*> (basicModel);
+};
+
+Object::Object( const std::string& fileName, const Material& material) : transform(){
 
 	ModelAssimp* assimpModel = new ModelAssimp(fileName, material);
 	_model = dynamic_cast<ModelInterface*> (assimpModel);

@@ -15,155 +15,213 @@
 #include "Enumerators.h"
 #include "Model_Assimp.h"
 
-
 // Custom simulation headers
 #include "CarEngine.h"
-
 
 using namespace std;
 
 void UpdateOnStart();
 void UpdateEachFrame();
 
-
 // Custom simulation variables
-vector < map<string, Object>::iterator> DashboardParent;
+vector < map<string, Object>::iterator> objectsParent;
 GameEngine* Engine;
-CarEngine* carEngine;
 
-Transform* car_t;
-Shader* rpm_shader;
+Transform* sphere_t;
+Transform* box_t;
+Shader* phong_shader;
 
-float updateRateFix;
-float light_color[] = { 0.8f, 0.8f ,0.8f };
+const float updateRateFix = 5;
+
+Transform* light_t;
+float light_color[] = { 0.8f, 0.2f ,0.2f };
+float ambientIntensity = 0.3f;
 //
-void InitCar() {
 
-	Shader* car_shader = &Engine->Materials->GetMaterial("Car_mat").GetShader();
-	car_t = &Engine->GetObject_It("Car")->second.transform;
+float rotationSpeed = 1.5f;
+float movementSpeed = 0.2f;
 
-	car_shader->use();
-	car_shader->isSeparateMVP = true;
-	car_shader->setVec3("lightColor", light_color);
-	car_shader->setVec3("lightPos", Engine->GetObject_It("Light")->second.transform.GetPosition());
-	//car_shader->setMatrix4("viewPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().View);
+void UpdateLightedObjectsShader() {
 
-	car_t->Scale(0.10);
-	car_t->Translate(5, 0, 0);
-	car_t->Rotate(30, 1, 0, 0);
+	phong_shader->use();
+	Vector3 pose = Engine->GetObject_It("Light")->second.transform.GetPosition();
+	phong_shader->setVec3("lightPos", pose);
 }
 
+void SetLightedObject(std::string objName) {
+
+
+	static float spawOffset_X = -1.5f;
+
+	box_t = &Engine->GetObject_It(objName)->second.transform;
+	box_t->Scale(0.5f);
+	box_t->Translate(spawOffset_X, 0, -3);
+	spawOffset_X += 1.5f;
+	box_t->Rotate(45, 1, 0, 0);
+
+	UpdateLightedObjectsShader();
+
+	objectsParent.push_back(Engine->GetObject_It(objName));
+
+}
 
 void InitLightSource() {
 
-	Transform* light_t = &Engine->GetObject_It("Light")->second.transform;
 	Shader* light_shader = &Engine->Materials->GetMaterial("Light_mat").GetShader();
-
-	light_t->Translate(-0.3, 1, 0);
-	light_t->Scale(0.3f);
 	light_shader->use();
+
 	light_shader->setFloat("l_Color", 0.9f);
+
+	light_t = &Engine->GetObject_It("Light")->second.transform;
+	light_t->Translate(2, 1, -5);
+	light_t->Scale(0.8f);
+
+	phong_shader = &Engine->Materials->GetMaterial("Box_mat").GetShader();
+	phong_shader->use();
+	phong_shader->isSeparateMVP = true;
+	phong_shader->setVec3("lightColor", light_color);
+	phong_shader->setFloat("ambientIntensity", ambientIntensity);
+	//phong_shader->setMatrix4("viewPos", Engine->GetObject_It("Light")->second.transform.GetMVPMatrix().View);
 }
 
 void Initialize() {
 
-	// Engine main initialization
-	Engine = new GameEngine(SCREEN_WIDTH, SCREEN_HEIGHT, "MyGameEngine");
+	const bool wireframeMode = false;
 
+	Engine = new GameEngine(SCREEN_WIDTH, SCREEN_HEIGHT, "MyGameEngine", wireframeMode);
 
 	// LOAD RESOURCES
-	Engine->Materials->LoadShaders(vector<string>{ "background_shader", "rpm_shader", "car_shader", "light_shader", "diffuse_shader" });
-
-	Engine->Materials->LoadTextures("../Resources/textures",
-		vector<string>{ "buffer_allocator.png", "dashboard_d.png", "box_d.jpg", "car_d.jpg", "rpm_d.png", "rpm_a.png"});
+	Engine->Materials->LoadShaders(vector<string>{"phong_shader", "light_shader"});
+	Engine->Materials->LoadTextures("../Resources/textures", vector<string>{"box_d.jpg"});
 
 	// CREATE MATERIALS
-	Engine->Materials->CreateMaterial("RPM_bar_mat", "rpm_shader", vector<string>{ "rpm_d.png", "rpm_a.png"});
-	Engine->Materials->CreateMaterial("Background_mat", "background_shader", vector<string>{ "dashboard_d.png"});
-	Engine->Materials->CreateMaterial("Box_mat", "diffuse_shader", vector<string>{ "box_d.jpg"});
-	Engine->Materials->CreateMaterial("Car_mat", "car_shader", vector<string>{ "car_d.jpg"});
+	Engine->Materials->CreateMaterial("Box_mat", "phong_shader", vector<string>{ "box_d.jpg"});
 	Engine->Materials->CreateMaterial("Light_mat", "light_shader");
-
-
-	UpdateOnStart();
 }
 
 void UpdateOnStart() {
 
-	updateRateFix = 5;
-
 	const string modelsFolder = "../Resources/models/";
 
-	Engine->CreateObject("RPM_bar", modelsFolder+ "quad.obj", Engine->Materials->GetMaterial("RPM_bar_mat"));
-	Engine->CreateObject("Background", modelsFolder + "quad.obj", Engine->Materials->GetMaterial("Background_mat"));
-	Engine->CreateObject("Car", modelsFolder + "ford.obj", Engine->Materials->GetMaterial("Car_mat"));
-	Engine->CreateObject("Light", modelsFolder + "box.obj", Engine->Materials->GetMaterial("Light_mat"));
-
-
-	Engine->GetObject_It("Background")->second.transform.Scale(3);
-	Engine->GetObject_It("RPM_bar")->second.transform.Scale(0.7);
-	Engine->GetObject_It("RPM_bar")->second.transform.Translate(-0.3, 0, 0);
-
-	rpm_shader = &Engine->Materials->GetMaterial("RPM_bar_mat").GetShader();
-
+	Engine->CreateObject("Light", MeshType::Sphere, MeshPrimitiveInfo(0.20f, 9, false), Engine->Materials->GetMaterial("Light_mat"));
 	InitLightSource();
-	InitCar();
 
-	carEngine = new CarEngine(900, 6800, 37 * updateRateFix, 30 * updateRateFix, 1500);
+	Engine->CreateObject("Prism", MeshType::Prism, MeshPrimitiveInfo(0.50f, 10, 2.5f), Engine->Materials->GetMaterial("Box_mat"));
+	Engine->CreateObject("Pyramid", MeshType::Pyramid, MeshPrimitiveInfo(0.50f, 5, 2.1f), Engine->Materials->GetMaterial("Box_mat"));
+	Engine->CreateObject("Sphere", MeshType::Sphere, MeshPrimitiveInfo(0.50f, 5, false), Engine->Materials->GetMaterial("Box_mat"));
+	Engine->CreateObject("Sofa", modelsFolder + "gun.obj", Engine->Materials->GetMaterial("Box_mat"));
+	SetLightedObject("Prism");
+	SetLightedObject("Pyramid");
+	SetLightedObject("Sphere");
+	SetLightedObject("Sofa");
 }
-
-
-float rotationSpeed = 0.1f;
-float gasValue = 0.0f;
 
 void UpdateEachFrame() {
 
-	//for (map<string, Object>::iterator objectIt : DashboardParent)
-	//{
-
-	//	if (Engine->InputManager->isKeyPressed_W)
-	//	{
-	//		objectIt->second.transform.Rotate(rotationSpeed, 1, 0, 0);
-	//	}
-
-	//	if (Engine->InputManager->isKeyPressed_A)
-	//	{
-	//		objectIt->second.transform.Rotate(rotationSpeed, 0, 1, 0);
-	//	}
-
-	//	if (Engine->InputManager->isKeyPressed_S)
-	//	{
-	//		objectIt->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
-	//	}
-
-	//	if (Engine->InputManager->isKeyPressed_D)
-	//	{
-	//		objectIt->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
-	//	}
-	//}
-
+	if (Engine->InputManager->isKeyPressed_plus)
+	{
+		for (map<string, Object>::iterator objectIt : objectsParent)
+		{
+			objectIt->second.transform.Translate(0, 0, 0.03f);
+		}
+	}
+	else if (Engine->InputManager->isKeyPressed_minus)
+	{
+		for (map<string, Object>::iterator objectIt : objectsParent)
+		{
+			objectIt->second.transform.Translate(0, 0, -0.03f);
+		}
+	}
 
 	if (Engine->InputManager->isKeyPressed_E)
 	{
-		carEngine->Throttle();
+		if (Engine->InputManager->isKeyPressed_W)
+		{
+			light_t->Translate(0, movementSpeed, 0);
+		}
+
+		if (Engine->InputManager->isKeyPressed_A)
+		{
+			light_t->Translate(-movementSpeed, 0, 0);
+		}
+
+		if (Engine->InputManager->isKeyPressed_S)
+		{
+			light_t->Translate(0, -movementSpeed, 0);
+		}
+
+		if (Engine->InputManager->isKeyPressed_D)
+		{
+			light_t->Translate(movementSpeed, 0, 0);
+		}
+
+		UpdateLightedObjectsShader();
 	}
 	else
 	{
-		carEngine->Idle();
+		for (map<string, Object>::iterator objectIt : objectsParent)
+		{
+			if (Engine->InputManager->isKeyPressed_W)
+			{
+				objectIt->second.transform.Rotate(rotationSpeed, 1, 0, 0);
+			}
+
+			if (Engine->InputManager->isKeyPressed_A)
+			{
+				objectIt->second.transform.Rotate(rotationSpeed, 0, 1, 0);
+			}
+
+			if (Engine->InputManager->isKeyPressed_S)
+			{
+				objectIt->second.transform.Rotate(-rotationSpeed, 1, 0, 0);
+			}
+
+			if (Engine->InputManager->isKeyPressed_D)
+			{
+				objectIt->second.transform.Rotate(-rotationSpeed, 0, 1, 0);
+			}
+		}
 	}
-
-	car_t->Rotate(0.4 * updateRateFix,0,1,0);
-
-	rpm_shader->setFloat("_gasValue", carEngine->GetNormalizedRPM());
 }
 
 int main()
 {
 	Initialize();
 
+	UpdateOnStart();
+
 	Engine->StartGameLoop(UpdateEachFrame);
 
 	return 0;
 }
 
+
+
+#pragma region Car code
+
+//float gasValue = 0.0f;
+//Shader* rpm_shader;
+//CarEngine* carEngine;
+
+//initialize
+//Engine->Materials->LoadShaders(vector<string>{ "background_shader", "rpm_shader", "car_shader", "light_shader", "diffuse_shader" });
+//vector<string>{ "buffer_allocator.png", "dashboard_d.png", "box_d.jpg", "car_d.jpg", "rpm_d.png", "rpm_a.png"});
+
+//carEngine = new CarEngine(900, 6800, 37 * updateRateFix, 30 * updateRateFix, 1500);
+
+//update
+//if (Engine->InputManager->isKeyPressed_E)
+//{
+//	carEngine->Throttle();
+//}
+//else
+//{
+//	carEngine->Idle();
+//}
+
+//car_t->Rotate(0.4 * updateRateFix,0,1,0);
+
+//rpm_shader->setFloat("_gasValue", carEngine->GetNormalizedRPM());
+
+#pragma endregion
 

@@ -7,6 +7,7 @@ struct SquareMesh : public Mesh {
 
 	SquareMesh() {
 
+
 		vertices = new float[12]{
 			 0.5f,  0.5f, 0.0f,  // top right
 			 0.5f, -0.5f, 0.0f,  // bottom right
@@ -19,8 +20,8 @@ struct SquareMesh : public Mesh {
 			1, 2, 3    // second triangle
 		};
 
-		this->verticesSize = 48;
-		this->indicesSize = 24;
+		this->verticesSize = 12;
+		this->indicesSize = 6;
 
 	};
 
