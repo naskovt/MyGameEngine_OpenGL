@@ -1,9 +1,15 @@
 #include "Object.h"
 
 
-Object::Object() :  transform()
+Object::Object() : transform()
 {
 };
+
+//Object::Object( const MeshType meshType, const Material& material) : transform() {
+//
+//	BasicModel* basicModel = new BasicModel(meshType, material);
+//	_model = dynamic_cast<ModelInterface*> (basicModel);
+//};
 
 Object::Object( const MeshType meshType, const Material& material) : transform() {
 

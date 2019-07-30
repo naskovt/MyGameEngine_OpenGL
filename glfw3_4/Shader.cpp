@@ -92,6 +92,17 @@ void Shader::setVec3(const std::string& name, float value[3]) const
 	glUniform3f(glGetUniformLocation(ID, name.c_str()), value[0], value[1], value[2]);
 }
 
+void Shader::setGlmVec3(const std::string& name, glm::vec3 vec3) const
+{
+	// set a 4 float color value
+	glUniform3f(glGetUniformLocation(ID, name.c_str()), vec3.x, vec3.y, vec3.z);
+}
+
+void Shader::setInteger(const std::string& name, const int integer) const
+{
+	glUniform1i(glGetUniformLocation(ID, name.c_str()), integer);
+}
+
 void Shader::setVec3(const std::string& name, Vector3 vec3) const
 {
 	// set a 4 float color value

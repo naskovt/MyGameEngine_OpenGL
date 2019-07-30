@@ -14,9 +14,11 @@
 #include "Shader.h"
 #include "Enumerators.h"
 #include "Model_Assimp.h"
+#include "TextRenderer.h"
 
 // Custom simulation headers
 #include "CarEngine.h"
+#include "Object.h"
 
 using namespace std;
 
@@ -30,6 +32,7 @@ GameEngine* Engine;
 Transform* sphere_t;
 Transform* box_t;
 Shader* phong_shader;
+TextRenderer* txtRenderer;
 
 const float updateRateFix = 5;
 
@@ -73,7 +76,7 @@ void InitLightSource() {
 	light_shader->setFloat("l_Color", 0.9f);
 
 	light_t = &Engine->GetObject_It("Light")->second.transform;
-	light_t->Translate(2, 1, -5);
+	light_t->Translate(2, 1, -1);
 	light_t->Scale(0.8f);
 
 	phong_shader = &Engine->Materials->GetMaterial("Box_mat").GetShader();
@@ -86,17 +89,23 @@ void InitLightSource() {
 
 void Initialize() {
 
-	const bool wireframeMode = false;
+	const bool wireframeMode = true;
 
 	Engine = new GameEngine(SCREEN_WIDTH, SCREEN_HEIGHT, "MyGameEngine", wireframeMode);
 
 	// LOAD RESOURCES
-	Engine->Materials->LoadShaders(vector<string>{"phong_shader", "light_shader"});
+	Engine->Materials->LoadShaders(vector<string>{"phong_shader", "light_shader", "text_shader"});
 	Engine->Materials->LoadTextures("../Resources/textures", vector<string>{"box_d.jpg"});
 
 	// CREATE MATERIALS
 	Engine->Materials->CreateMaterial("Box_mat", "phong_shader", vector<string>{ "box_d.jpg"});
+	Engine->Materials->CreateMaterial("Text_mat", "text_shader");
 	Engine->Materials->CreateMaterial("Light_mat", "light_shader");
+
+	txtRenderer = new TextRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, Engine->Materials->GetMaterial("Text_mat").GetShader());
+	//txtRenderer->Load("../Resources/fonts/OCRAEXT.TTF", 24); 
+	txtRenderer->Load("../Resources/fonts/Butcherman-Regular.ttf", 30);
+
 }
 
 void UpdateOnStart() {
@@ -108,12 +117,12 @@ void UpdateOnStart() {
 
 	Engine->CreateObject("Prism", MeshType::Prism, MeshPrimitiveInfo(0.50f, 10, 2.5f), Engine->Materials->GetMaterial("Box_mat"));
 	Engine->CreateObject("Pyramid", MeshType::Pyramid, MeshPrimitiveInfo(0.50f, 5, 2.1f), Engine->Materials->GetMaterial("Box_mat"));
-	Engine->CreateObject("Sphere", MeshType::Sphere, MeshPrimitiveInfo(0.50f, 5, false), Engine->Materials->GetMaterial("Box_mat"));
-	Engine->CreateObject("Sofa", modelsFolder + "gun.obj", Engine->Materials->GetMaterial("Box_mat"));
+	Engine->CreateObject("Sphere", MeshType::Sphere, MeshPrimitiveInfo(0.50f, 12, true), Engine->Materials->GetMaterial("Box_mat"));
+	Engine->CreateObject("Gun", modelsFolder + "gun.obj", Engine->Materials->GetMaterial("Box_mat"));
 	SetLightedObject("Prism");
 	SetLightedObject("Pyramid");
 	SetLightedObject("Sphere");
-	SetLightedObject("Sofa");
+	SetLightedObject("Gun");
 }
 
 void UpdateEachFrame() {
@@ -184,13 +193,21 @@ void UpdateEachFrame() {
 	}
 }
 
+void LateUpdateEachFrame(){
+
+	txtRenderer->RenderText("This is sample text", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+}
+
 int main()
 {
 	Initialize();
 
 	UpdateOnStart();
 
-	Engine->StartGameLoop(UpdateEachFrame);
+	Engine->StartGameLoop(UpdateEachFrame, LateUpdateEachFrame);
+
+	//delete Engine;
+	//delete txtRenderer;
 
 	return 0;
 }

@@ -1,5 +1,23 @@
 #include "BasicModel.h"
 
+//BasicModel::BasicModel(std::string text, const Material& mat) : ModelInterface(mat)
+//{
+//	switch (meshType)
+//	{
+//	case Triangle:
+//		this->_mesh = new TriangleMesh();
+//		break;
+//	case Square:
+//		this->_mesh = new SquareMesh();
+//		break;
+//	default:
+//		std::cout << "\n ERROR - not implemented mesh type class !\n";
+//		break;
+//	}
+//
+//	this->LoadMeshToGPU();
+//}
+
 BasicModel::BasicModel(MeshType meshType, const Material& mat) : ModelInterface(mat)
 {
 	switch (meshType)
@@ -80,12 +98,6 @@ void BasicModel::RenderModel() {
 
 void BasicModel::LoadMeshToGPU() {
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
-
 	//std::cout << std::endl;
 	//std::cout << "vert size: " << _mesh->verticesSize;
 	//std::cout << std::endl;
@@ -106,6 +118,11 @@ void BasicModel::LoadMeshToGPU() {
 	//	std::cout << "ind: " << loaderIndex << " : " << _mesh->indices[i] << "  " << _mesh->indices[i + 1] << "  " << _mesh->indices[i + 2] << " \n";
 	//}
 
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	glGenBuffers(1, &EBO);
+	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, _mesh->verticesSize * sizeof(float), _mesh->vertices, GL_DYNAMIC_DRAW);
@@ -113,12 +130,12 @@ void BasicModel::LoadMeshToGPU() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, _mesh->indicesSize * sizeof(unsigned int), _mesh->indices, GL_DYNAMIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEXOFFSET, nullptr);
+	// layout index 0, 3 components(x,y,z), float data type, not normalized, stride(byte offset from each attribute), offset from the first attribute  
 	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, VERTEXOFFSET, nullptr); //  for position
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEXOFFSET, (void*)(3 * sizeof(float)) );	// for normals
 
-	// vertex normals
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, VERTEXOFFSET, (void*)offsetof(12, Normal));
 
 	// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

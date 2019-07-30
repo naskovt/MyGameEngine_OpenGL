@@ -32,6 +32,8 @@ public:
 	void setVec3(const std::string& name, float value[3]) const;
 	void setVec3(const std::string& name, Vector3 vec3) const;
 	void setMatrix4(const std::string& name, glm::mat4 value) const;
+	void setGlmVec3(const std::string& name, glm::vec3 vec3) const;
+	void setInteger(const std::string& name, const int integer) const;
 	
 private:
 	

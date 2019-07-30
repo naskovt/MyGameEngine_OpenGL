@@ -72,6 +72,9 @@
     <ClCompile Include="PyramidMesh.cpp">
       <Filter>Source Files\Meshes</Filter>
     </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
@@ -110,6 +113,12 @@
       <Filter>Source Files\shaders</Filter>
     </None>
     <None Include="shaders\phong_shader.vert">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\text_shader.frag">
+      <Filter>Source Files\shaders</Filter>
+    </None>
+    <None Include="shaders\text_shader.vert">
       <Filter>Source Files\shaders</Filter>
     </None>
   </ItemGroup>
@@ -181,6 +190,12 @@
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
     <ClInclude Include="PyramidMesh.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Header Files\Meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="BoxMesh.h">
       <Filter>Header Files\Meshes</Filter>
     </ClInclude>
   </ItemGroup>

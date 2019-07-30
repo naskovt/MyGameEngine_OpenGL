@@ -25,9 +25,9 @@ GameEngine::GameEngine(const unsigned int SCR_WIDTH_set, const unsigned int SCR_
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	#ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
-	#endif
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
+#endif
 
 	if (!this->Initialize())
 	{
@@ -52,7 +52,7 @@ bool GameEngine::Initialize() {
 	}
 
 	glfwMakeContextCurrent(_window);
-	glfwSetFramebufferSizeCallback(_window, [](GLFWwindow * window, int width, int height) {glViewport(0, 0, width, height); });
+	glfwSetFramebufferSizeCallback(_window, [](GLFWwindow* window, int width, int height) {glViewport(0, 0, width, height); });
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
@@ -80,18 +80,18 @@ bool GameEngine::Initialize() {
 }
 
 void GameEngine::CreateObject(const std::string& name, const MeshType meshType, const Material& material) {
-	GameObjects_Map.insert( make_pair(name, Object(meshType, material)) );
+	GameObjects_Map.insert(make_pair(name, Object(meshType, material)));
 }
 
 void GameEngine::CreateObject(const std::string& name, const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material) {
-	GameObjects_Map.insert( make_pair(name, Object(meshType, info, material)) );
+	GameObjects_Map.insert(make_pair(name, Object(meshType, info, material)));
 }
 
 void GameEngine::CreateObject(const std::string& name, const std::string& fileName, const Material& material) {
 	GameObjects_Map.insert(make_pair(name, Object(fileName, material)));
 }
 
-void GameEngine::DrawGame() {
+void GameEngine::DrawGameObjects() {
 
 	// render fucntions
 
@@ -102,26 +102,27 @@ void GameEngine::DrawGame() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	std::map<std::string, Object>::iterator it = GameObjects_Map.begin();
-	for (; it != GameObjects_Map.end() ; ++it)
+	for (; it != GameObjects_Map.end(); ++it)
 	{
 		it->second.UpdateDrawing();
 	}
-
-	// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-	// -------------------------------------------------------------------------------
-	glfwSwapBuffers(_window);
-	glfwPollEvents();
 }
 
-void GameEngine::StartGameLoop(void (*UpdateGame)())
+void GameEngine::StartGameLoop(void (*UpdateEachFrame)(), void (*LateUpdateEachFrame)())
 {
 	while (!glfwWindowShouldClose(_window))
 	{
 		this->InputManager->Process();
 
-		UpdateGame();
+		UpdateEachFrame();
 
-		DrawGame();
+		DrawGameObjects();
+
+		LateUpdateEachFrame();
+
+		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
+		glfwSwapBuffers(_window);
+		glfwPollEvents();
 	}
 }
 
@@ -131,9 +132,9 @@ map<string, Object>::iterator  GameEngine::GetObject_It(std::string name)
 
 	if (result == GameObjects_Map.end())
 	{
-		cout << " Error: Gameobject: " << name << " not found! " << endl; 
+		cout << " Error: Gameobject: " << name << " not found! " << endl;
 	}
-	
+
 	return result;
 }
 

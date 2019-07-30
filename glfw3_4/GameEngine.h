@@ -22,6 +22,9 @@
 #include "Object.h"
 #include "Input.h"
 
+#include "TextRenderer.h"
+
+
 class GameEngine
 {
 public:
@@ -36,12 +39,13 @@ public:
 	~GameEngine();
 
 	bool Initialize();
-	void StartGameLoop(void (*UpdateGame)());
+	void StartGameLoop(void (*UpdateGame)(), void (*LateUpdateEachFrame)());
 	map<string, Object>::iterator GetObject_It(std::string name);
 	void CreateObject(const std::string& name, const MeshType meshType, const Material& material);
 	void CreateObject(const std::string& name, const MeshType meshType, const MeshPrimitiveInfo& info, const Material& material);
 	void CreateObject(const std::string& name, const std::string& fileName, const Material& material); 
 	
+	TextRenderer* m_test_obj;
 private:
 
 	char* vertexShaderSource;
@@ -50,7 +54,8 @@ private:
 	std::map< std::string, Object > GameObjects_Map;
 	bool m_WireframeRendering = false;
 
-	void DrawGame();
+
+	void DrawGameObjects();
 };
 
 #endif // !GAMEENGINE_H
